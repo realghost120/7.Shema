@@ -54,16 +54,19 @@ window.schema = {
 // ======================
 // RENDERA VECKAN
 // ======================
-const weekEl = document.getElementById("week");
 
-for (const day in schema) {
+const weekEl = document.getElementById("week");
+const daysOrder = ["Måndag","Tisdag","Onsdag","Torsdag","Fredag"];
+
+daysOrder.forEach(day => {
+
   const dayDiv = document.createElement("div");
   dayDiv.className = "day";
+  dayDiv.setAttribute("data-day", day);
   dayDiv.innerHTML = `<h2>${day}</h2>`;
 
   let lessons = [...schema[day]];
 
-  // MENTOR ALLTID HÖGST UPP PÅ MÅNDAG
   if (day === "Måndag") {
     lessons.sort((a, b) => {
       if (a.subject === "MENTOR") return -1;
@@ -84,25 +87,16 @@ for (const day in schema) {
   });
 
   weekEl.appendChild(dayDiv);
-}
+});
 
 // ======================
-// FUSK-KNAPP 😈
-// ======================
-const btn = document.getElementById("fuskBtn");
-const popup = document.getElementById("fuskPopup");
-
-btn.onclick = () => popup.classList.remove("hidden");
-popup.onclick = () => popup.classList.add("hidden");
-
-// ======================
-// AUTOMATISK DAG (MÅN → TIS osv)
+// AUTOMATISK DAG + SCROLL
 // ======================
 
 const dayTitleEl = document.getElementById("dayTitle");
 
-function updateDayTitle() {
-  const days = [
+function updateDay() {
+  const allDays = [
     "Söndag",
     "Måndag",
     "Tisdag",
@@ -112,14 +106,42 @@ function updateDayTitle() {
     "Lördag"
   ];
 
-  const todayName = days[new Date().getDay()];
+  const todayName = allDays[new Date().getDay()];
 
+  // Uppdatera rubrik
   if (dayTitleEl) {
     dayTitleEl.textContent = todayName;
   }
+
+  // Markera dagens kolumn
+  document.querySelectorAll(".day").forEach(div => {
+    div.classList.remove("today");
+  });
+
+  const todayDiv = document.querySelector(`[data-day="${todayName}"]`);
+  
+  if (todayDiv) {
+    todayDiv.classList.add("today");
+
+    // Scrolla till dagens kort (mobil)
+    todayDiv.scrollIntoView({
+      behavior: "smooth",
+      inline: "center"
+    });
+  }
 }
 
-// Kör direkt + kolla varje minut
-updateDayTitle();
-setInterval(updateDayTitle, 60 * 1000);
+updateDay();
+setInterval(updateDay, 60000);
 
+// ======================
+// FUSK-KNAPP 😈
+// ======================
+
+const btn = document.getElementById("fuskBtn");
+const popup = document.getElementById("fuskPopup");
+
+if (btn && popup) {
+  btn.onclick = () => popup.classList.remove("hidden");
+  popup.onclick = () => popup.classList.add("hidden");
+}
