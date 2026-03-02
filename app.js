@@ -12,7 +12,6 @@ window.schema = {
     { start: "13:10", end: "13:50", subject: "NO" },
     { start: "14:00", end: "14:50", subject: "EN" }
   ],
-
   "Tisdag": [
     { start: "08:20", end: "09:10", subject: "BLOCK" },
     { start: "09:15", end: "10:15", subject: "MU 1 OCH BL 1" },
@@ -22,7 +21,6 @@ window.schema = {
     { start: "13:05", end: "13:45", subject: "SV" },
     { start: "13:55", end: "14:35", subject: "SO" }
   ],
-
   "Onsdag": [
     { start: "08:20", end: "09:20", subject: "SV" },
     { start: "09:40", end: "10:40", subject: "MA" },
@@ -31,7 +29,6 @@ window.schema = {
     { start: "12:25", end: "13:45", subject: "SLÖJD" },
     { start: "13:50", end: "14:50", subject: "EN" }
   ],
-
   "Torsdag": [
     { start: "08:20", end: "09:30", subject: "IDH" },
     { start: "09:50", end: "10:50", subject: "NO" },
@@ -40,7 +37,6 @@ window.schema = {
     { start: "12:50", end: "13:40", subject: "NO" },
     { start: "13:45", end: "14:35", subject: "SO" }
   ],
-
   "Fredag": [
     { start: "08:00", end: "09:10", subject: "IDH" },
     { start: "09:20", end: "10:10", subject: "BLOCK" },
@@ -56,33 +52,30 @@ window.schema = {
 // ======================
 
 const weekEl = document.getElementById("week");
+const liveInfo = document.getElementById("liveInfo");
+const dayTitleEl = document.getElementById("dayTitle");
+
 const daysOrder = ["Måndag","Tisdag","Onsdag","Torsdag","Fredag"];
 
 daysOrder.forEach(day => {
-
   const dayDiv = document.createElement("div");
   dayDiv.className = "day";
   dayDiv.setAttribute("data-day", day);
   dayDiv.innerHTML = `<h2>${day}</h2>`;
 
-  let lessons = [...schema[day]];
-
-  if (day === "Måndag") {
-    lessons.sort((a, b) => {
-      if (a.subject === "MENTOR") return -1;
-      if (b.subject === "MENTOR") return 1;
-      return 0;
-    });
-  }
-
-  lessons.forEach(lesson => {
+  schema[day].forEach(lesson => {
     const div = document.createElement("div");
     div.className = `lesson ${lesson.subject.replaceAll(" ", "")}`;
+    div.setAttribute("data-start", lesson.start);
+    div.setAttribute("data-end", lesson.end);
+    div.setAttribute("data-day", day);
+
     div.innerHTML = `
       <div class="time">${lesson.start}</div>
       <div class="subject">${lesson.subject}</div>
       <div class="time">${lesson.end}</div>
     `;
+
     dayDiv.appendChild(div);
   });
 
@@ -90,58 +83,70 @@ daysOrder.forEach(day => {
 });
 
 // ======================
-// AUTOMATISK DAG + SCROLL
+// LIVE SYSTEM 🔥
 // ======================
 
-const dayTitleEl = document.getElementById("dayTitle");
+function timeToMinutes(t) {
+  const [h, m] = t.split(":").map(Number);
+  return h * 60 + m;
+}
 
-function updateDay() {
-  const allDays = [
-    "Söndag",
-    "Måndag",
-    "Tisdag",
-    "Onsdag",
-    "Torsdag",
-    "Fredag",
-    "Lördag"
-  ];
+function updateLive() {
+  const now = new Date();
+  const nowMinutes = now.getHours() * 60 + now.getMinutes();
 
-  const todayName = allDays[new Date().getDay()];
+  const days = ["Söndag","Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag"];
+  const todayName = days[now.getDay()];
 
-  // Uppdatera rubrik
-  if (dayTitleEl) {
-    dayTitleEl.textContent = todayName;
+  if (dayTitleEl) dayTitleEl.textContent = todayName;
+
+  document.querySelectorAll(".lesson").forEach(l => l.classList.remove("current"));
+
+  if (!schema[todayName]) {
+    liveInfo.textContent = "Ingen skola idag 🎉";
+    return;
   }
 
-  // Markera dagens kolumn
-  document.querySelectorAll(".day").forEach(div => {
-    div.classList.remove("today");
-  });
+  const todayLessons = schema[todayName];
 
-  const todayDiv = document.querySelector(`[data-day="${todayName}"]`);
-  
-  if (todayDiv) {
-    todayDiv.classList.add("today");
+  let currentLesson = null;
+  let nextLesson = null;
 
-    // Scrolla till dagens kort (mobil)
-    todayDiv.scrollIntoView({
-      behavior: "smooth",
-      inline: "center"
+  for (let lesson of todayLessons) {
+    const start = timeToMinutes(lesson.start);
+    const end = timeToMinutes(lesson.end);
+
+    if (nowMinutes >= start && nowMinutes < end) {
+      currentLesson = lesson;
+    }
+
+    if (nowMinutes < start && !nextLesson) {
+      nextLesson = lesson;
+    }
+  }
+
+  if (currentLesson) {
+    const end = timeToMinutes(currentLesson.end);
+    const minutesLeft = end - nowMinutes;
+
+    document.querySelectorAll(`.lesson[data-day="${todayName}"]`).forEach(div => {
+      if (div.getAttribute("data-start") === currentLesson.start) {
+        div.classList.add("current");
+      }
     });
+
+    liveInfo.innerHTML = `🟢 Nu: ${currentLesson.subject} <br> Slutar om ${minutesLeft} min`;
+
+  } else if (nextLesson) {
+    const start = timeToMinutes(nextLesson.start);
+    const minutesUntil = start - nowMinutes;
+
+    liveInfo.innerHTML = `🔔 Nästa: ${nextLesson.subject} <br> Börjar om ${minutesUntil} min`;
+
+  } else {
+    liveInfo.textContent = "🏁 Skoldagen är slut";
   }
 }
 
-updateDay();
-setInterval(updateDay, 60000);
-
-// ======================
-// FUSK-KNAPP 😈
-// ======================
-
-const btn = document.getElementById("fuskBtn");
-const popup = document.getElementById("fuskPopup");
-
-if (btn && popup) {
-  btn.onclick = () => popup.classList.remove("hidden");
-  popup.onclick = () => popup.classList.add("hidden");
-}
+updateLive();
+setInterval(updateLive, 30000);
