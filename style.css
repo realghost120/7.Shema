@@ -1,169 +1,160 @@
+/* =========================
+   BAS
+   ========================= */
+
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f2f4f8;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  color: #111;
 }
 
+/* =========================
+   HEADER
+   ========================= */
+
 header {
-  padding: 15px;
-  background: white;
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .corner {
   font-size: 12px;
-  opacity: 0.6;
+  opacity: 0.7;
 }
+
+/* =========================
+   VECKA GRID
+   ========================= */
 
 #week {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
-  padding: 15px;
+  gap: 18px;
+  padding: 25px;
 }
 
+/* =========================
+   DAG-KORT
+   ========================= */
+
 .day {
-  background: white;
-  border-radius: 14px;
-  padding: 10px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 20px;
+  padding: 15px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.day:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 45px rgba(0,0,0,0.25);
 }
 
 .day h2 {
   text-align: center;
+  margin-bottom: 10px;
+  font-size: 18px;
+  letter-spacing: 1px;
 }
 
+/* =========================
+   LEKTIONER
+   ========================= */
+
 .lesson {
-  margin-top: 12px;
-  padding: 10px;
-  border-radius: 12px;
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 16px;
   text-align: center;
+  font-weight: 500;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lesson:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
 .time {
   font-size: 12px;
+  opacity: 0.8;
 }
 
 .subject {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: bold;
   margin: 6px 0;
 }
 
-/* Färger */
-.SV { background: #ffe066; }
-.MA { background: #74c0fc; }
-.NO { background: #8ce99a; }
-.SO { background: #f783ac; }
-.EN { background: #ffa94d; }
-.IDH { background: #63e6be; }
-.LUNCH { background: #ced4da; }
+/* =========================
+   ÄMNESFÄRGER (med glow)
+   ========================= */
+
 .MENTOR { background: #b197fc; }
-
-#fuskBtn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  padding: 14px;
-  border-radius: 50%;
-  border: none;
-  background: red;
-  color: white;
-  font-weight: bold;
-}
-
-
-
-/* ========= ÄMNESFÄRGER ========= */
-
-/* Mentor */
-.MENTOR {
-  background: #b197fc; /* lila */
-  color: #000;
-}
-
-/* Matte */
-.MA {
-  background: #74c0fc; /* blå */
-  color: #000;
-}
-
-/* Svenska */
-.SV {
-  background: #ffe066; /* gul */
-  color: #000;
-}
-
-/* NO */
-.NO {
-  background: #8ce99a; /* grön */
-  color: #000;
-}
-
-/* SO */
-.SO {
-  background: #faa2c1; /* rosa */
-  color: #000;
-}
-
-/* Engelska */
-.EN {
-  background: #ffa94d; /* orange */
-  color: #000;
-}
-
-/* Idrott */
-.IDH {
-  background: #63e6be; /* turkos */
-  color: #000;
-}
-
-/* Lunch */
-.LUNCH {
-  background: #ced4da; /* grå */
-  color: #000;
-}
-
-/* Block */
-.BLOCK {
-  background: #dee2e6; /* ljusgrå */
-  color: #000;
-  border: 2px dashed #adb5bd;
-}
-
-/* Slöjd */
-.SLÖJD {
-  background: #cdb4db; /* mjuk lila */
-  color: #000;
-}
-
-/* Musik / Block-lektioner */
+.MA { background: #4dabf7; }
+.SV { background: #ffd43b; }
+.NO { background: #69db7c; }
+.SO { background: #f06595; }
+.EN { background: #ff922b; }
+.IDH { background: #38d9a9; }
+.LUNCH { background: #adb5bd; }
+.BLOCK { background: #dee2e6; border: 2px dashed #868e96; }
+.SLÖJD { background: #cdb4db; }
 .MU1OCHBL1,
-.MU2OCHBL2 {
-  background: #ffd6a5; /* beige */
-  color: #000;
+.MU2OCHBL2 { background: #ffd6a5; }
+
+/* Lite glow-effekt på alla ämnen */
+.lesson {
+  color: #111;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.6);
 }
 
 /* =========================
-   MOBILANPASSNING
+   FUSK-KNAPP 🔴
    ========================= */
 
-/* Standard (desktop) – behåll grid */
-#week {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
+#fuskBtn {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  padding: 18px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(45deg, #ff0000, #ff4d4d);
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* 📱 MOBIL */
+#fuskBtn:hover {
+  transform: scale(1.15);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+}
+
+/* =========================
+   MOBIL 📱
+   ========================= */
+
 @media (max-width: 768px) {
   #week {
     display: flex;
-    gap: 14px;
+    gap: 18px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    padding-bottom: 20px;
+    padding-bottom: 30px;
   }
 
   .day {
@@ -175,7 +166,7 @@ header {
     position: sticky;
     top: 0;
     background: white;
-    padding: 8px 0;
+    padding: 10px 0;
     z-index: 2;
   }
 }
