@@ -19,7 +19,7 @@ window.schema = {
     { start: "10:20", end: "11:20", subject: "MU 2 OCH BL 2" },
     { start: "11:25", end: "12:25", subject: "MA" },
     { start: "12:25", end: "12:45", subject: "LUNCH" },
-    { start: "12:55", end: "13:45", subject: "SV" },
+    { start: "13:05", end: "13:45", subject: "SV" },
     { start: "13:55", end: "14:35", subject: "SO" }
   ],
 
@@ -122,3 +122,4 @@ function updateDayTitle() {
 // Kör direkt + kolla varje minut
 updateDayTitle();
 setInterval(updateDayTitle, 60 * 1000);
+
