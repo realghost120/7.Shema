@@ -90,7 +90,6 @@ function scrollToToday() {
   const now = new Date();
   const days = ["Söndag","Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag"];
   const todayName = days[now.getDay()];
-
   const todayElement = document.querySelector(`.day[data-day="${todayName}"]`);
   
   if (todayElement) {
@@ -105,7 +104,7 @@ function scrollToToday() {
 scrollToToday();
 
 // ======================
-// LIVE SYSTEM 🔥
+// LIVE SYSTEM
 // ======================
 
 function timeToMinutes(t) {
@@ -125,12 +124,11 @@ function updateLive() {
   document.querySelectorAll(".lesson").forEach(l => l.classList.remove("current"));
 
   if (!schema[todayName]) {
-    liveInfo.textContent = "Ingen skola idag 🎉";
+    liveInfo.innerHTML = `<i class="fa-solid fa-house"></i> Ingen skola idag`;
     return;
   }
 
   const todayLessons = schema[todayName];
-
   let currentLesson = null;
   let nextLesson = null;
 
@@ -157,16 +155,27 @@ function updateLive() {
       }
     });
 
-    liveInfo.innerHTML = `🟢 Nu: ${currentLesson.subject} <br> Slutar om ${minutesLeft} min`;
+    liveInfo.innerHTML = `
+      <i class="fa-solid fa-circle-play"></i>
+      Nu: ${currentLesson.subject}<br>
+      <small>Slutar om ${minutesLeft} min</small>
+    `;
 
   } else if (nextLesson) {
     const start = timeToMinutes(nextLesson.start);
     const minutesUntil = start - nowMinutes;
 
-    liveInfo.innerHTML = `🔔 Nästa: ${nextLesson.subject} <br> Börjar om ${minutesUntil} min`;
+    liveInfo.innerHTML = `
+      <i class="fa-solid fa-bell"></i>
+      Nästa: ${nextLesson.subject}<br>
+      <small>Börjar om ${minutesUntil} min</small>
+    `;
 
   } else {
-    liveInfo.textContent = "🏁 Skoldagen är slut";
+    liveInfo.innerHTML = `
+      <i class="fa-solid fa-flag-checkered"></i>
+      Skoldagen är slut
+    `;
   }
 }
 
