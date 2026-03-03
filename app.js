@@ -119,8 +119,10 @@ function updateLive() {
   const days = ["Söndag","Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag"];
   const todayName = days[now.getDay()];
 
-  if (dayTitleEl) dayTitleEl.textContent = todayName;
-
+  const titleSpan = dayTitleEl.querySelector("span");
+if (titleSpan) titleSpan.textContent = todayName;
+  
+  
   document.querySelectorAll(".lesson").forEach(l => l.classList.remove("current"));
 
   if (!schema[todayName]) {
