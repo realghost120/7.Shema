@@ -37,14 +37,15 @@ window.schema = {
     { start: "12:50", end: "13:40", subject: "NO" },
     { start: "13:45", end: "14:35", subject: "SO" }
   ],
-  "Fredag": [
-    { start: "08:00", end: "09:10", subject: "IDH" },
-    { start: "09:20", end: "10:10", subject: "BLOCK" },
-    { start: "10:20", end: "11:20", subject: "NO" },
-    { start: "11:30", end: "12:10", subject: "SO" },
-    { start: "12:10", end: "12:30", subject: "LUNCH" },
-    { start: "13:00", end: "13:50", subject: "MA" }
-  ]
+  
+"Fredag": [
+  { start: "08:00", end: "09:10", subject: "IDH" },
+  { start: "09:20", end: "10:10", subject: "BLOCK" },
+  { start: "10:20", end: "11:20", subject: "NO" },
+  { start: "11:30", end: "11:50", subject: "LUNCH" },
+  { start: "12:10", end: "12:50", subject: "SO" },
+  { start: "13:00", end: "13:50", subject: "MA" }
+]
 };
 
 // ======================
