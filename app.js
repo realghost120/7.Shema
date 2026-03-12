@@ -43,7 +43,7 @@ window.schema = {
     { start: "10:20", end: "11:20", subject: "NO" },
     { start: "11:30", end: "11:50", subject: "LUNCH" },
     { start: "12:10", end: "12:50", subject: "SO" },
-    { start: "13:00", end: "13:50", subject: "MA" }
+    { start: "13:00", end: "13:40", subject: "MA" }
   ]
 };
 
