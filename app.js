@@ -27,7 +27,7 @@ window.schema = {
     { start: "10:50", end: "11:40", subject: "SO" },
     { start: "11:40", end: "12:00", subject: "LUNCH" },
     { start: "12:25", end: "13:45", subject: "SLÖJD" },
-    { start: "13:50", end: "14:50", subject: "EN" }
+    { start: "13:50", end: "14:40", subject: "EN" }
   ],
   "Torsdag": [
     { start: "08:20", end: "09:30", subject: "IDH" },
