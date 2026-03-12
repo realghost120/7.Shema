@@ -27,7 +27,7 @@ window.schema = {
     { start: "10:50", end: "11:40", subject: "SO" },
     { start: "11:40", end: "12:00", subject: "LUNCH" },
     { start: "12:25", end: "13:45", subject: "SLÖJD" },
-    { start: "13:50", end: "14:40", subject: "EN" }
+    { start: "13:50", end: "14:50", subject: "EN" }
   ],
   "Torsdag": [
     { start: "08:20", end: "09:30", subject: "IDH" },
@@ -35,7 +35,7 @@ window.schema = {
     { start: "11:15", end: "12:15", subject: "BLOCK" },
     { start: "12:15", end: "12:35", subject: "LUNCH" },
     { start: "12:50", end: "13:40", subject: "NO" },
-    { start: "13:45", end: "14:35", subject: "SO" }
+    { start: "13:45", end: "14:30", subject: "SO" }
   ],
   "Fredag": [
     { start: "08:00", end: "09:10", subject: "IDH" },
