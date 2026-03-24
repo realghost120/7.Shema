@@ -3,27 +3,30 @@
    ====================== */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f3f4f6;
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  background: linear-gradient(135deg, #eef2ff, #f8fafc);
+  color: #1f2937;
 }
 
 h1 {
   margin: 0;
-  font-size: 28px;
+  font-size: 30px;
+  font-weight: 600;
 }
 
 p {
   margin: 6px 0 0;
-  color: #555;
+  color: #6b7280;
 }
 
 /* ======================
    HEADER
    ====================== */
 header {
-  background: white;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
   padding: 20px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
 .top-right {
@@ -31,7 +34,7 @@ header {
   right: 20px;
   top: 20px;
   font-size: 12px;
-  color: #777;
+  color: #9ca3af;
 }
 
 /* ======================
@@ -40,63 +43,89 @@ header {
 #week {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 14px;
-  padding: 16px;
+  gap: 18px;
+  padding: 20px;
 }
 
 /* ======================
    DAG-KORT
    ====================== */
 .day {
-  background: #e5e7eb;
-  border-radius: 14px;
-  padding: 10px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 18px;
+  padding: 14px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.day:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.08);
 }
 
 .day h2 {
   text-align: center;
-  margin: 6px 0 12px;
+  margin: 6px 0 14px;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 /* ======================
    LEKTION
    ====================== */
 .lesson {
-  border-radius: 12px;
-  padding: 10px;
+  border-radius: 14px;
+  padding: 12px;
   margin-bottom: 10px;
   text-align: center;
-  font-weight: bold;
+  font-weight: 500;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer;
+}
+
+.lesson:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.1);
 }
 
 .time {
   font-size: 12px;
-  opacity: 0.8;
+  opacity: 0.7;
 }
 
 .subject {
   font-size: 16px;
-  margin: 4px 0;
+  margin: 6px 0;
+  font-weight: 600;
 }
 
 /* ======================
    FÄRGER (ÄMNEN)
    ====================== */
-.MENTOR { background: #a78bfa; }
-.MA { background: #60a5fa; }
-.SV { background: #facc15; }
-.SO { background: #fb7185; }
-.NO { background: #4ade80; }
-.EN { background: #fb923c; }
-.IDH { background: #34d399; }
-.BLOCK { background: #d1d5db; border: 2px dashed #9ca3af; }
-.LUNCH { background: #9ca3af; color: white; }
-.SLÖJD { background: #c084fc; }
+.MENTOR { background: linear-gradient(135deg, #a78bfa, #8b5cf6); color: white; }
+.MA { background: linear-gradient(135deg, #60a5fa, #3b82f6); color: white; }
+.SV { background: linear-gradient(135deg, #fde047, #facc15); }
+.SO { background: linear-gradient(135deg, #fb7185, #f43f5e); color: white; }
+.NO { background: linear-gradient(135deg, #4ade80, #22c55e); }
+.EN { background: linear-gradient(135deg, #fb923c, #f97316); color: white; }
+.IDH { background: linear-gradient(135deg, #34d399, #10b981); }
+.SLÖJD { background: linear-gradient(135deg, #c084fc, #a855f7); color: white; }
+
+.BLOCK {
+  background: rgba(209, 213, 219, 0.4);
+  border: 2px dashed #9ca3af;
+}
+
+.LUNCH {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  color: white;
+}
 
 /* Fix för långa namn */
 .MU1OCHBL1,
 .MU2OCHBL2 {
-  background: #fdba74;
+  background: linear-gradient(135deg, #fdba74, #fb923c);
 }
 
 /* ======================
@@ -106,23 +135,30 @@ header {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background: black;
+  background: linear-gradient(135deg, #111827, #374151);
   color: white;
   border: none;
   padding: 14px 18px;
-  border-radius: 50px;
-  font-size: 16px;
+  border-radius: 999px;
+  font-size: 15px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease;
+}
+
+#fuskBtn:hover {
+  transform: scale(1.1);
 }
 
 #fuskPopup {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.75);
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 28px;
   color: white;
+  backdrop-filter: blur(6px);
 }
 
 .hidden {
@@ -138,6 +174,7 @@ header {
     overflow-x: auto;
     gap: 16px;
     scroll-snap-type: x mandatory;
+    padding: 16px;
   }
 
   .day {
@@ -148,8 +185,9 @@ header {
   .day h2 {
     position: sticky;
     top: 0;
-    background: #e5e7eb;
-    padding: 8px;
-    border-radius: 10px;
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(6px);
+    padding: 10px;
+    border-radius: 12px;
   }
 }
