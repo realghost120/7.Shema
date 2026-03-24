@@ -9,70 +9,66 @@
   <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css" />
-
   <style>
-    /* Snabb CSS för centrering och röd text */
-    .corner {
+    /* Hela sidan röd med svart text och centrerat innehåll */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      background-color: red;
+      color: black;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center; /* horisontellt */
+      align-items: center;     /* vertikalt */
+      flex-direction: column;
       text-align: center;
-      margin-top: 10px;
+    }
+
+    #dayTitle {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    #liveInfo {
+      font-size: 1.5rem;
+      margin-bottom: 40px;
+    }
+
+    .corner {
+      font-size: 2rem;
     }
 
     .update-text {
-      color: red;
       display: block;
-      margin-top: 5px;
+      margin-top: 10px;
+      font-size: 1.2rem;
       font-weight: bold;
     }
   </style>
 
-  <!-- JS -->
   <script src="app.js" defer></script>
 </head>
 
 <body>
 
 <header>
-  <div class="header-left">
-    <h1 id="dayTitle">
-      <i class="fa-solid fa-calendar-day"></i>
-      <span>Idag</span>
-    </h1>
+  <h1 id="dayTitle">
+    <i class="fa-solid fa-calendar-day"></i>
+    <span>Idag</span>
+  </h1>
 
-    <div id="liveInfo" class="live-info">
-      <i class="fa-solid fa-clock"></i>
-      Laddar schema...
-    </div>
+  <div id="liveInfo">
+    <i class="fa-solid fa-clock"></i>
+    Laddar schema...
   </div>
 
   <div class="corner">
-    <i class="fa-solid fa-code"></i>
-    <span>Arkeljo</span>
-    <span class="update-text">Senaste uppdaterat 24 03 2026 klockan 20:30</span>
+    <span>MVH Arkeljo</span>
+    <span class="update-text">Under uppdaterning </span>
   </div>
 </header>
-
-<main>
-  <!-- Här kan ditt schema ligga -->
-</main>
-
-<!-- ⚙️ EDIT -->
-<div id="editPopup" class="hidden">
-  <div class="popup">
-    <h2>Redigera</h2>
-    
-    <input id="editSubject" placeholder="Ämne">
-    <input id="editStart" type="time">
-    <input id="editEnd" type="time">
-    
-    <label>
-      <input type="checkbox" id="editCancel"> Inställd
-    </label>
-
-    <button onclick="saveEdit()">Spara</button>
-  </div>
-</div>
 
 </body>
 </html>
