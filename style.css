@@ -50,6 +50,33 @@ header {
   position: relative;
 }
 
+
+#adminPanel {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  z-index: 999;
+}
+
+.panel {
+  background: rgba(0,0,0,0.9);
+  color: white;
+  padding: 16px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.panel button {
+  background: #374151;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+
 #adminBtn {
   position: absolute;
   top: 20px;
