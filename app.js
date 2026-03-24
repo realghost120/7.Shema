@@ -181,5 +181,81 @@ if (titleSpan) titleSpan.textContent = todayName;
   }
 }
 
+
+let isAdmin = false;
+let currentEdit = null;
+
+// ======================
+// ADMIN LOGIN
+// ======================
+
+document.getElementById("adminBtn").onclick = () => {
+  document.getElementById("adminLogin").classList.remove("hidden");
+};
+
+function loginAdmin() {
+  const code = document.getElementById("adminCode").value;
+
+  if (code === "Ghost67") {
+    isAdmin = true;
+    alert("Admin mode aktivt 😈");
+    document.getElementById("adminLogin").classList.add("hidden");
+  } else {
+    alert("Fel kod");
+  }
+}
+
+// ======================
+// KLICKA LEKTION
+// ======================
+
+document.addEventListener("click", (e) => {
+  if (!isAdmin) return;
+
+  const lessonDiv = e.target.closest(".lesson");
+  if (!lessonDiv) return;
+
+  const day = lessonDiv.dataset.day;
+  const start = lessonDiv.dataset.start;
+
+  const lesson = schema[day].find(l => l.start === start);
+
+  currentEdit = { lesson, day };
+
+  document.getElementById("editSubject").value = lesson.subject;
+  document.getElementById("editStart").value = lesson.start;
+  document.getElementById("editEnd").value = lesson.end;
+  document.getElementById("editCancel").checked = lesson.cancelled || false;
+
+  document.getElementById("editPopup").classList.remove("hidden");
+});
+
+// ======================
+// SPARA ÄNDRING
+// ======================
+
+function saveEdit() {
+  const { lesson } = currentEdit;
+
+  lesson.subject = document.getElementById("editSubject").value;
+  lesson.start = document.getElementById("editStart").value;
+  lesson.end = document.getElementById("editEnd").value;
+  lesson.cancelled = document.getElementById("editCancel").checked;
+
+  localStorage.setItem("schema", JSON.stringify(schema));
+
+  location.reload();
+}
+
+// ======================
+// LADDA SPARAT
+// ======================
+
+const saved = localStorage.getItem("schema");
+if (saved) {
+  window.schema = JSON.parse(saved);
+}
+
+
 updateLive();
 setInterval(updateLive, 30000);
