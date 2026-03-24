@@ -18,6 +18,33 @@
 
 <body>
 
+<button id="adminBtn">Admin</button>
+
+<div id="adminLogin" class="hidden">
+  <div class="popup">
+    <h2>Admin login</h2>
+    <input type="password" id="adminCode" placeholder="Kod...">
+    <button onclick="loginAdmin()">Logga in</button>
+  </div>
+</div>
+
+<div id="editPopup" class="hidden">
+  <div class="popup">
+    <h2>Redigera lektion</h2>
+    
+    <input id="editSubject" placeholder="Ämne">
+    <input id="editStart" type="time">
+    <input id="editEnd" type="time">
+    
+    <label>
+      <input type="checkbox" id="editCancel"> Inställd
+    </label>
+
+    <button onclick="saveEdit()">Spara</button>
+  </div>
+</div>
+
+
 <header>
   <div class="header-left">
     <h1 id="dayTitle">
