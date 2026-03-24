@@ -210,7 +210,7 @@ function loginAdmin() {
 // ======================
 
 document.addEventListener("click", (e) => {
-  if (!isAdmin) return;
+  if (!isAdmin || !editMode) return;
 
   const lessonDiv = e.target.closest(".lesson");
   if (!lessonDiv) return;
