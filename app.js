@@ -256,6 +256,41 @@ if (saved) {
   window.schema = JSON.parse(saved);
 }
 
+let editMode = false;
+
+// LOGIN
+function loginAdmin() {
+  const code = document.getElementById("adminCode").value;
+
+  if (code === "Ghost67") {
+    isAdmin = true;
+    document.getElementById("adminLogin").classList.add("hidden");
+    document.getElementById("adminPanel").classList.remove("hidden");
+  } else {
+    alert("Fel kod");
+  }
+}
+
+// LOGOUT
+function logoutAdmin() {
+  isAdmin = false;
+  editMode = false;
+  document.getElementById("adminPanel").classList.add("hidden");
+}
+
+// TOGGLE EDIT MODE
+function toggleEditMode() {
+  editMode = !editMode;
+  alert(editMode ? "Edit mode ON" : "Edit mode OFF");
+}
+
+// RESET
+function resetSchema() {
+  localStorage.removeItem("schema");
+  location.reload();
+}
+
+
 
 updateLive();
 setInterval(updateLive, 30000);
