@@ -6,7 +6,7 @@
  
   <title>Klass 7A – Schema</title>
 
-  <!-- Font Awesome (ikoner via kod, inga bilder) -->
+  <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
   <!-- CSS -->
@@ -17,33 +17,6 @@
 </head>
 
 <body>
-
-<button id="adminBtn">Admin</button>
-
-<div id="adminLogin" class="hidden">
-  <div class="popup">
-    <h2>Admin login</h2>
-    <input type="password" id="adminCode" placeholder="Kod...">
-    <button onclick="loginAdmin()">Logga in</button>
-  </div>
-</div>
-
-<div id="editPopup" class="hidden">
-  <div class="popup">
-    <h2>Redigera lektion</h2>
-    
-    <input id="editSubject" placeholder="Ämne">
-    <input id="editStart" type="time">
-    <input id="editEnd" type="time">
-    
-    <label>
-      <input type="checkbox" id="editCancel"> Inställd
-    </label>
-
-    <button onclick="saveEdit()">Spara</button>
-  </div>
-</div>
-
 
 <header>
   <div class="header-left">
@@ -58,15 +31,46 @@
     </div>
   </div>
 
+  <!-- 🔐 ADMIN KNAPP UPPE -->
+  <button id="adminBtn">
+    <i class="fa-solid fa-lock"></i>
+  </button>
+
   <div class="corner">
     <i class="fa-solid fa-code"></i>
     <span>Arkeljo</span>
     <i class="fa-solid fa-code"></i>
-    <span>Senaste uppdaterat 24 03 2026 klockan 20:30 </span>
+    <span>Senaste uppdaterat 24 03 2026 klockan 20:30</span>
   </div>
 </header>
 
 <main id="week"></main>
+
+<!-- 🔐 LOGIN -->
+<div id="adminLogin" class="hidden">
+  <div class="popup">
+    <h2>Admin</h2>
+    <input type="password" id="adminCode" placeholder="Kod...">
+    <button onclick="loginAdmin()">Logga in</button>
+  </div>
+</div>
+
+<!-- ⚙️ EDIT -->
+<div id="editPopup" class="hidden">
+  <div class="popup">
+    <h2>Redigera</h2>
+    
+    <input id="editSubject" placeholder="Ämne">
+    <input id="editStart" type="time">
+    <input id="editEnd" type="time">
+    
+    <label>
+      <input type="checkbox" id="editCancel"> Inställd
+    </label>
+
+    <button onclick="saveEdit()">Spara</button>
+  </div>
+</div>
 
 </body>
 </html>
