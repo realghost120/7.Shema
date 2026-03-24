@@ -47,6 +47,38 @@ header {
   padding: 20px;
 }
 
+
+
+#adminBtn {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: #111;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: none;
+}
+
+.popup {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#adminLogin, #editPopup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
 /* ======================
    DAG-KORT
    ====================== */
