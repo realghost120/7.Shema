@@ -1,266 +1,155 @@
-/* =========================
-   ROOT / THEME 🎨
-   ========================= */
-
-:root {
-  --bg: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-
-  --glass: rgba(255,255,255,0.75);
-  --glass-strong: rgba(255,255,255,0.92);
-
-  --text: #1a1a1a;
-  --muted: rgba(0,0,0,0.6);
-
-  --accent: #00ffc6;
-  --accent-2: #00aaff;
-
-  --radius: 22px;
-  --radius-sm: 14px;
-
-  --shadow: 0 20px 50px rgba(0,0,0,0.25);
-  --shadow-hover: 0 30px 70px rgba(0,0,0,0.35);
-}
-
-/* =========================
+/* ======================
    BAS
-   ========================= */
-
+   ====================== */
 body {
   margin: 0;
-  font-family: 'Inter', 'Segoe UI', sans-serif;
-  background: var(--bg);
-  color: var(--text);
+  font-family: Arial, sans-serif;
+  background: #f3f4f6;
 }
 
-/* =========================
-   HEADER (glass + glow)
-   ========================= */
-
-header {
-  padding: 20px 28px;
-  background: var(--glass);
-  backdrop-filter: blur(18px);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: var(--shadow);
-  position: sticky;
-  top: 0;
-}
-
-/* glow line */
-header::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  opacity: 0.6;
-}
-
-header h1 {
+h1 {
   margin: 0;
-  font-size: 26px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  font-size: 28px;
 }
 
-/* =========================
-   LIVE INFO / STATUS
-   ========================= */
-
-.live-info {
-  font-size: 14px;
-  font-weight: 600;
-  display: flex;
-  gap: 10px;
-  align-items: center;
+p {
+  margin: 6px 0 0;
+  color: #555;
 }
 
-.live-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #00ff88;
-  box-shadow: 0 0 10px #00ff88;
-  animation: pulse 1.5s infinite;
+/* ======================
+   HEADER
+   ====================== */
+header {
+  background: white;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); opacity: 0.7; }
-  100% { transform: scale(1.4); opacity: 0; }
+.top-right {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 12px;
+  color: #777;
 }
 
-/* =========================
-   GRID
-   ========================= */
-
+/* ======================
+   VECKA GRID
+   ====================== */
 #week {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 26px;
-  padding: 30px;
+  gap: 14px;
+  padding: 16px;
 }
 
-/* =========================
-   DAG-KORT (premium card)
-   ========================= */
-
+/* ======================
+   DAG-KORT
+   ====================== */
 .day {
-  background: var(--glass-strong);
-  border-radius: var(--radius);
-  padding: 18px;
-  box-shadow: var(--shadow);
-  transition: 0.35s ease;
-  position: relative;
-  overflow: hidden;
+  background: #e5e7eb;
+  border-radius: 14px;
+  padding: 10px;
 }
-
-/* top glow bar */
-.day::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 4px;
-  width: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-}
-
-.day:hover {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: var(--shadow-hover);
-}
-
-/* =========================
-   DAG TITEL
-   ========================= */
 
 .day h2 {
   text-align: center;
-  font-size: 18px;
-  margin-bottom: 10px;
-  letter-spacing: 0.5px;
+  margin: 6px 0 12px;
 }
 
-/* =========================
-   LEKTIONER (card inside card)
-   ========================= */
-
+/* ======================
+   LEKTION
+   ====================== */
 .lesson {
-  margin-top: 12px;
-  padding: 14px;
-  border-radius: var(--radius-sm);
-  background: rgba(255,255,255,0.7);
-  backdrop-filter: blur(6px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-  transition: 0.25s;
-  position: relative;
+  border-radius: 12px;
+  padding: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: bold;
 }
-
-/* vänster färgbar */
-.lesson::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 6px;
-  height: 100%;
-  border-radius: 6px;
-  background: currentColor;
-}
-
-.lesson:hover {
-  transform: scale(1.05);
-}
-
-/* =========================
-   TEXT
-   ========================= */
 
 .time {
   font-size: 12px;
-  color: var(--muted);
+  opacity: 0.8;
 }
 
 .subject {
-  font-size: 17px;
-  font-weight: 700;
-  margin: 6px 0;
+  font-size: 16px;
+  margin: 4px 0;
 }
 
-/* =========================
-   ÄMNEN + IKONER 🎯
-   ========================= */
+/* ======================
+   FÄRGER (ÄMNEN)
+   ====================== */
+.MENTOR { background: #a78bfa; }
+.MA { background: #60a5fa; }
+.SV { background: #facc15; }
+.SO { background: #fb7185; }
+.NO { background: #4ade80; }
+.EN { background: #fb923c; }
+.IDH { background: #34d399; }
+.BLOCK { background: #d1d5db; border: 2px dashed #9ca3af; }
+.LUNCH { background: #9ca3af; color: white; }
+.SLÖJD { background: #c084fc; }
 
-.MA { color: #339af0; }
-.SV { color: #fab005; }
-.NO { color: #40c057; }
-.SO { color: #e64980; }
-.EN { color: #f76707; }
-.IDH { color: #20c997; }
-.LUNCH { color: #868e96; }
-.MENTOR { color: #9775fa; }
-
-/* =========================
-   TODAY + CURRENT 🔥
-   ========================= */
-
-.today {
-  border: 2px solid var(--accent);
-  box-shadow: 0 0 25px rgba(0,255,200,0.5);
+/* Fix för långa namn */
+.MU1OCHBL1,
+.MU2OCHBL2 {
+  background: #fdba74;
 }
 
-.current {
-  outline: 3px solid #00ff00;
-  animation: currentPulse 1s infinite alternate;
-}
-
-@keyframes currentPulse {
-  from { transform: scale(1); }
-  to { transform: scale(1.05); }
-}
-
-/* =========================
-   FLOAT BUTTON 🚀
-   ========================= */
-
+/* ======================
+   FUSK-KNAPP 😈
+   ====================== */
 #fuskBtn {
   position: fixed;
-  bottom: 25px;
-  right: 25px;
-  width: 65px;
-  height: 65px;
-  border-radius: 50%;
-  border: none;
-  background: linear-gradient(45deg, #ff0033, #ff6b6b);
+  bottom: 20px;
+  right: 20px;
+  background: black;
   color: white;
-  font-size: 22px;
-  cursor: pointer;
-  box-shadow: var(--shadow);
-  transition: 0.3s;
+  border: none;
+  padding: 14px 18px;
+  border-radius: 50px;
+  font-size: 16px;
 }
 
-#fuskBtn:hover {
-  transform: scale(1.2) rotate(10deg);
+#fuskPopup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28px;
+  color: white;
 }
 
-/* =========================
-   MOBIL
-   ========================= */
+.hidden {
+  display: none;
+}
 
+/* ======================
+   MOBIL 📱
+   ====================== */
 @media (max-width: 768px) {
   #week {
     display: flex;
     overflow-x: auto;
+    gap: 16px;
     scroll-snap-type: x mandatory;
   }
 
   .day {
     min-width: 85%;
-    scroll-snap-align: center;
+    scroll-snap-align: start;
+  }
+
+  .day h2 {
+    position: sticky;
+    top: 0;
+    background: #e5e7eb;
+    padding: 8px;
+    border-radius: 10px;
   }
 }
