@@ -58,6 +58,21 @@ header{
   animation:pulse 1.5s infinite;
 }
 
+/* ANIMERAD AKTIV LEKTION */
+.current{
+  outline:3px solid #16a34a;
+  background:#22c55e !important;
+  color:white;
+  transform:scale(1.05);
+  animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(34,197,94,0.6);}
+  70%{box-shadow:0 0 0 12px rgba(34,197,94,0);}
+  100%{box-shadow:0 0 0 0 rgba(34,197,94,0);}
+}
+
 /* NEXT */
 .next{
   border:2px dashed black;
@@ -132,14 +147,14 @@ function toMin(t){
   return h*60+m;
 }
 
-// LIVE SYSTEM
+// LIVE SYSTEME
 function update(){
   const now=new Date();
   const min=now.getHours()*60+now.getMinutes();
   const days=["Söndag","Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag"];
   const today=days[now.getDay()];
 
-  document.getElementById("dayTitle").textContent=today;
+  document.querySelector("#dayTitle span").textContent=today;
 
   document.querySelectorAll(".lesson").forEach(l=>{
     l.classList.remove("current","next");
@@ -152,20 +167,25 @@ function update(){
 
   let current=null;
   let next=null;
+  let previous=null;
 
   for(let l of schema[today]){
     const s=toMin(l.start);
     const e=toMin(l.end);
 
     if(min>=s && min<e) current=l;
-    if(min< s && !next) next=l;
+    if(min<s && !next) next=l;
+    if(min>=e) previous=l;
   }
 
   if(current){
-    const duration=toMin(current.end)-toMin(current.start);
-    const left=toMin(current.end)-min;
+    const start=toMin(current.start);
+    const end=toMin(current.end);
 
-    document.querySelectorAll(`[data-day="${today}"]`).forEach(div=>{
+    const duration=end-start;
+    const left=end-min;
+
+    document.querySelectorAll(`.lesson[data-day="${today}"]`).forEach(div=>{
       if(div.dataset.start===current.start){
         div.classList.add("current");
       }
@@ -173,14 +193,19 @@ function update(){
 
     liveInfo.innerHTML=`
     Nu: ${current.subject}<br>
-    ${left} min kvar<br>
-    Lektion längd: ${duration} min
+    ⏳ ${left} min kvar<br>
+    ⏱️ Längd: ${duration} min
     `;
   }
   else if(next){
     const until=toMin(next.start)-min;
 
-    document.querySelectorAll(`[data-day="${today}"]`).forEach(div=>{
+    let breakTime = 0;
+    if(previous){
+      breakTime = toMin(next.start) - toMin(previous.end);
+    }
+
+    document.querySelectorAll(`.lesson[data-day="${today}"]`).forEach(div=>{
       if(div.dataset.start===next.start){
         div.classList.add("next");
       }
@@ -188,15 +213,15 @@ function update(){
 
     liveInfo.innerHTML=`
     Rast: ${until} min<br>
+    ⏸️ Rast totalt: ${breakTime} min<br>
     Nästa: ${next.subject}<br>
     Börjar om ${until} min
     `;
   }
   else{
-    liveInfo.textContent="Slut för idag";
+    liveInfo.innerHTML="Slut för idag";
   }
 }
-
 update();
 setInterval(update,1000);
 </script>
