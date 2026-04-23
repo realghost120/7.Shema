@@ -6,94 +6,125 @@
 
 <title>Klass 7A – Schema</title>
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
 <style>
 body{
   margin:0;
-  font-family:Arial,sans-serif;
-  background:#f3f4f6;
+  font-family:"Inter","Segoe UI",Arial,sans-serif;
+  background:linear-gradient(135deg,#eef2ff,#f8fafc);
+  color:#1f2937;
 }
 
 /* HEADER */
 header{
-  text-align:center;
-  padding:16px;
-  background:white;
   position:sticky;
   top:0;
+  z-index:10;
+  background:rgba(255,255,255,0.9);
+  backdrop-filter:blur(10px);
+  padding:20px;
+  text-align:center;
+  border-bottom:1px solid rgba(0,0,0,0.05);
 }
 
-#dayTitle{font-size:22px;}
-#liveInfo{font-size:14px;margin-top:6px;}
+#dayTitle{font-size:28px;}
+#liveInfo{font-size:16px;margin-top:6px;}
 
-/* WEEK */
+/* WEEK DESKTOP */
 #week{
   display:grid;
   grid-template-columns:repeat(5,1fr);
-  gap:16px;
-  padding:20px;
-  max-width:1300px;
-  margin:auto;
+  gap:20px;
+  padding:30px;
+  max-width:1400px;
+  margin:0 auto;
 }
 
-/* DAY */
+/* DAY CARD */
 .day{
-  background:white;
-  border-radius:16px;
-  padding:12px;
+  background:rgba(255,255,255,0.85);
+  border-radius:20px;
+  padding:16px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+  transition:0.2s;
+}
+
+.day:hover{
+  transform:translateY(-4px);
+}
+
+.day h2{
+  text-align:center;
+  margin-bottom:12px;
+  font-size:18px;
 }
 
 /* LESSON */
 .lesson{
-  padding:10px;
-  margin-bottom:8px;
-  border-radius:12px;
+  border-radius:14px;
+  padding:12px;
+  margin-bottom:10px;
   text-align:center;
-  background:#e5e7eb;
+  font-size:14px;
+  transition:0.2s;
 }
 
-/* CURRENT (ANIMERAD GRÖN) */
+.lesson .time{font-size:11px;opacity:0.7;}
+.lesson .subject{font-size:16px;font-weight:600;margin:4px 0;}
+
 .current{
-  background:#22c55e !important;
-  color:white;
-  animation:pulse 1.5s infinite;
+  outline:3px solid black;
+  transform:scale(1.04);
 }
 
-/* ANIMERAD AKTIV LEKTION */
-.current{
-  outline:3px solid #16a34a;
-  background:#22c55e !important;
-  color:white;
-  transform:scale(1.05);
-  animation:pulse 1.5s infinite;
-}
-
-@keyframes pulse{
-  0%{box-shadow:0 0 0 0 rgba(34,197,94,0.6);}
-  70%{box-shadow:0 0 0 12px rgba(34,197,94,0);}
-  100%{box-shadow:0 0 0 0 rgba(34,197,94,0);}
-}
-
-/* NEXT */
 .next{
-  border:2px dashed black;
+  outline:2px dashed black;
 }
 
-/* ANIMATION */
-@keyframes pulse{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.05);}
-  100%{transform:scale(1);}
-}
+/* COLORS */
+.MA{background:#3b82f6;color:white;}
+.SV{background:#fde047;}
+.SO{background:#f43f5e;color:white;}
+.NO{background:#22c55e;}
+.EN{background:#f97316;color:white;}
+.IDH{background:#10b981;}
+.SLÖJD{background:#a855f7;color:white;}
+.MENTOR{background:#8b5cf6;color:white;}
+.LUNCH{background:#4b5563;color:white;}
+.BLOCK{background:#9ca3af;}
+.MU1OCHBL1,.MU2OCHBL2{background:#fb923c;}
 
 /* MOBILE */
-@media(max-width:768px){
+@media (max-width:768px){
   #week{
     display:flex;
     overflow-x:auto;
+    gap:14px;
+    padding:14px;
+    scroll-snap-type:x mandatory;
   }
+
   .day{
     min-width:85%;
+    scroll-snap-align:start;
   }
+
+  .day h2{
+    position:sticky;
+    top:0;
+    background:white;
+    padding:8px;
+    border-radius:10px;
+  }
+}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:20px;
+  font-size:13px;
+  color:#6b7280;
 }
 </style>
 </head>
@@ -101,11 +132,13 @@ header{
 <body>
 
 <header>
-<h1 id="dayTitle">Idag</h1>
+<h1 id="dayTitle"><span>Idag</span></h1>
 <div id="liveInfo">Laddar...</div>
 </header>
 
 <div id="week"></div>
+
+<footer>Utvecklad av Arkeljo Developer</footer>
 
 <script>
 // SCHEMA
@@ -114,7 +147,43 @@ let schema={
 {start:"09:00",end:"09:20",subject:"MENTOR"},
 {start:"09:20",end:"10:20",subject:"MA"},
 {start:"10:30",end:"11:30",subject:"SV"},
-{start:"11:40",end:"12:30",subject:"SO"}
+{start:"11:40",end:"12:30",subject:"SO"},
+{start:"12:30",end:"12:50",subject:"LUNCH"},
+{start:"13:10",end:"13:50",subject:"NO"},
+{start:"14:00",end:"14:50",subject:"EN"}
+],
+"Tisdag":[
+{start:"08:20",end:"09:10",subject:"BLOCK"},
+{start:"09:15",end:"10:15",subject:"MU1OCHBL1"},
+{start:"10:20",end:"11:20",subject:"MU2OCHBL2"},
+{start:"11:25",end:"12:25",subject:"MA"},
+{start:"12:25",end:"12:45",subject:"LUNCH"},
+{start:"13:05",end:"13:45",subject:"SV"},
+{start:"13:55",end:"14:35",subject:"SO"}
+],
+"Onsdag":[
+{start:"08:20",end:"09:20",subject:"SV"},
+{start:"09:40",end:"10:40",subject:"MA"},
+{start:"10:50",end:"11:40",subject:"SO"},
+{start:"11:40",end:"12:00",subject:"LUNCH"},
+{start:"12:25",end:"13:45",subject:"SLÖJD"},
+{start:"13:50",end:"14:50",subject:"EN"}
+],
+"Torsdag":[
+{start:"08:20",end:"09:30",subject:"IDH"},
+{start:"09:50",end:"10:50",subject:"NO"},
+{start:"11:15",end:"12:15",subject:"BLOCK"},
+{start:"12:15",end:"12:35",subject:"LUNCH"},
+{start:"12:50",end:"13:40",subject:"NO"},
+{start:"13:45",end:"14:30",subject:"SO"}
+],
+"Fredag":[
+{start:"08:00",end:"09:10",subject:"IDH"},
+{start:"09:20",end:"10:10",subject:"BLOCK"},
+{start:"10:20",end:"11:20",subject:"NO"},
+{start:"11:30",end:"11:50",subject:"LUNCH"},
+{start:"12:10",end:"12:50",subject:"SO"},
+{start:"13:00",end:"13:40",subject:"MA"}
 ]
 };
 
@@ -129,17 +198,30 @@ Object.keys(schema).forEach(day=>{
 
   schema[day].forEach(l=>{
     const div=document.createElement("div");
-    div.className="lesson";
+    div.className="lesson "+l.subject;
     div.dataset.start=l.start;
-    div.dataset.end=l.end;
     div.dataset.day=day;
 
-    div.innerHTML=`${l.start} - ${l.end}<br>${l.subject}`;
+    div.innerHTML=`
+      <div class="time">${l.start}</div>
+      <div class="subject">${l.subject}</div>
+      <div class="time">${l.end}</div>
+    `;
     d.appendChild(div);
   });
 
   weekEl.appendChild(d);
 });
+
+// AUTO SCROLL
+function scrollToToday(){
+  const now=new Date();
+  const days=["Söndag","Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag"];
+  const today=days[now.getDay()];
+  const el=document.querySelector(`.day[data-day="${today}"]`);
+  if(el) el.scrollIntoView({behavior:"smooth",inline:"center"});
+}
+scrollToToday();
 
 // TIME
 function toMin(t){
@@ -147,7 +229,7 @@ function toMin(t){
   return h*60+m;
 }
 
-// LIVE SYSTEME
+// LIVE
 function update(){
   const now=new Date();
   const min=now.getHours()*60+now.getMinutes();
@@ -167,7 +249,6 @@ function update(){
 
   let current=null;
   let next=null;
-  let previous=null;
 
   for(let l of schema[today]){
     const s=toMin(l.start);
@@ -175,55 +256,31 @@ function update(){
 
     if(min>=s && min<e) current=l;
     if(min<s && !next) next=l;
-    if(min>=e) previous=l;
   }
 
   if(current){
-    const start=toMin(current.start);
-    const end=toMin(current.end);
-
-    const duration=end-start;
-    const left=end-min;
-
     document.querySelectorAll(`.lesson[data-day="${today}"]`).forEach(div=>{
       if(div.dataset.start===current.start){
         div.classList.add("current");
       }
     });
-
-    liveInfo.innerHTML=`
-    Nu: ${current.subject}<br>
-    ⏳ ${left} min kvar<br>
-    ⏱️ Längd: ${duration} min
-    `;
+    liveInfo.innerHTML=`Nu: ${current.subject}`;
   }
   else if(next){
-    const until=toMin(next.start)-min;
-
-    let breakTime = 0;
-    if(previous){
-      breakTime = toMin(next.start) - toMin(previous.end);
-    }
-
     document.querySelectorAll(`.lesson[data-day="${today}"]`).forEach(div=>{
       if(div.dataset.start===next.start){
         div.classList.add("next");
       }
     });
-
-    liveInfo.innerHTML=`
-    Rast: ${until} min<br>
-    ⏸️ Rast totalt: ${breakTime} min<br>
-    Nästa: ${next.subject}<br>
-    Börjar om ${until} min
-    `;
+    liveInfo.innerHTML=`Nästa: ${next.subject}`;
   }
   else{
     liveInfo.innerHTML="Slut för idag";
   }
 }
+
 update();
-setInterval(update,1000);
+setInterval(update,30000);
 </script>
 
 </body>
