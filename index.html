@@ -706,24 +706,26 @@ footer {
 </head>
 <body>
 
-<!-- ── LOGIN ── -->
-<div id="loginScreen">
-  <div class="login-box">
-    <div class="login-icon">🔐</div>
-    <h2>Admin Access</h2>
-    <p>Ange din kod för att komma åt adminpanelen</p>
-    <div class="login-input-wrap">
+<!-- ── ADMIN LOGIN MODAL ── -->
+<div id="adminLoginModal" class="modal-bg">
+  <div class="modal" style="text-align:center;max-width:380px;">
+    <div style="width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,var(--accent),#9c8fff);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:24px;box-shadow:0 8px 24px rgba(108,99,255,0.4);">🔐</div>
+    <h3 style="margin-bottom:6px;">Admin Access</h3>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:24px;">Ange koden för att komma åt adminpanelen</p>
+    <div class="login-input-wrap" style="margin-bottom:14px;">
       <i class="fa-solid fa-key"></i>
       <input type="password" id="loginCode" placeholder="••••••••" autocomplete="off" onkeydown="if(event.key==='Enter')doLogin()">
     </div>
-    <button id="loginBtn" onclick="doLogin()"><i class="fa-solid fa-arrow-right-to-bracket"></i> Logga in</button>
-    <div id="loginError">Fel kod – försök igen</div>
-    <p class="login-hint">Klass 7A Schemahantering</p>
+    <button id="loginBtn" onclick="doLogin()" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#9c8fff);color:white;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:'Outfit',sans-serif;box-shadow:0 4px 18px rgba(108,99,255,0.4);">
+      <i class="fa-solid fa-arrow-right-to-bracket"></i> Logga in
+    </button>
+    <div id="loginError" style="margin-top:12px;font-size:13px;color:var(--accent2);opacity:0;transition:0.2s;height:18px;">Fel kod – försök igen</div>
+    <button class="btn btn-ghost" onclick="closeAdminLogin()" style="margin-top:14px;width:100%;">Avbryt</button>
   </div>
 </div>
 
 <!-- ── NAV ── -->
-<nav id="mainNav" style="display:none;">
+<nav id="mainNav">
   <div class="nav-brand">
     <div class="nav-logo">📅</div>
     <div class="nav-title">
@@ -739,10 +741,10 @@ footer {
     <button class="btn btn-ghost" id="btnSchema" onclick="showView('schema')">
       <i class="fa-solid fa-calendar-week"></i> <span class="btn-text">Schema</span>
     </button>
-    <button class="btn btn-primary" id="btnAdmin" onclick="showView('admin')">
+    <button class="btn btn-primary" id="btnAdmin" onclick="openAdminLogin()">
       <i class="fa-solid fa-sliders"></i> <span class="btn-text">Admin</span>
     </button>
-    <button class="btn btn-logout" onclick="logout()">
+    <button class="btn btn-logout" id="btnLogout" onclick="logout()" style="display:none;" title="Logga ut från admin">
       <i class="fa-solid fa-arrow-right-from-bracket"></i>
     </button>
   </div>
@@ -909,7 +911,7 @@ footer {
 <!-- TOAST -->
 <div id="toast"><span class="t-icon">✅</span><span id="toastMsg"></span></div>
 
-<footer id="mainFooter" style="display:none;">Utvecklad av Arkeljo Developer</footer>
+<footer id="mainFooter">Utvecklad av Arkeljo Developer</footer>
 
 <script>
 // ════════════════════════════════════════
@@ -994,35 +996,46 @@ function logChange(msg){
 }
 
 // ════════════════════════════════════════
-// LOGIN
+// ADMIN LOGIN (only protects admin panel)
 // ════════════════════════════════════════
+let adminUnlocked = false;
+
+function openAdminLogin(){
+  if(adminUnlocked){ showView('admin'); return; }
+  document.getElementById('adminLoginModal').classList.add('open');
+  setTimeout(()=>document.getElementById('loginCode').focus(),100);
+}
+
+function closeAdminLogin(){
+  document.getElementById('adminLoginModal').classList.remove('open');
+  document.getElementById('loginCode').value='';
+  document.getElementById('loginError').style.opacity='0';
+}
+
 function doLogin(){
   const val = document.getElementById('loginCode').value;
   if(val === PASS){
-    document.getElementById('loginScreen').style.display='none';
-    document.getElementById('mainNav').style.display='flex';
-    document.getElementById('mainFooter').style.display='block';
-    renderSchema();
-    showView('schema');
+    adminUnlocked = true;
+    closeAdminLogin();
+    document.getElementById('btnLogout').style.display='flex';
+    showView('admin');
   } else {
     const inp = document.getElementById('loginCode');
     const err = document.getElementById('loginError');
     inp.classList.remove('shake');
     void inp.offsetWidth;
     inp.classList.add('shake');
-    err.classList.add('show');
+    err.style.opacity='1';
     inp.value='';
-    setTimeout(()=>err.classList.remove('show'),3000);
+    setTimeout(()=>{ err.style.opacity='0'; },3000);
   }
 }
 
 function logout(){
-  document.getElementById('loginScreen').style.display='flex';
-  document.getElementById('mainNav').style.display='none';
-  document.getElementById('mainFooter').style.display='none';
-  document.getElementById('loginCode').value='';
-  document.getElementById('viewSchema').style.display='none';
-  document.getElementById('viewAdmin').style.display='none';
+  adminUnlocked = false;
+  document.getElementById('btnLogout').style.display='none';
+  showView('schema');
+  toast('Utloggad från admin','🔒');
 }
 
 // ════════════════════════════════════════
@@ -1049,6 +1062,9 @@ function toast(msg,icon='✅'){
 // VIEWS
 // ════════════════════════════════════════
 function showView(v){
+  // Guard admin behind login
+  if(v==='admin' && !adminUnlocked){ openAdminLogin(); return; }
+
   document.getElementById('viewSchema').style.display = v==='schema'?'block':'none';
   document.getElementById('viewAdmin').style.display  = v==='admin'?'block':'none';
 
@@ -1397,11 +1413,13 @@ function updateColor(s,hex){
   save();renderSchema();
 }
 
-// INIT
+// ── INIT ──────────────────────────────────────────────────────
 document.getElementById('loginCode').addEventListener('keydown',e=>{
   if(e.key==='Enter') doLogin();
 });
 
+// Schema is public – load it straight away
+showView('schema');
 setInterval(updateLive,30000);
 </script>
 </body>
