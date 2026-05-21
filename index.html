@@ -467,32 +467,91 @@ footer{
   .admin-layout{grid-template-columns:1fr;}
   .admin-sidebar{
     flex-direction:row;flex-wrap:wrap;
-    padding:12px;border-right:none;
+    padding:10px 12px;border-right:none;
     border-bottom:1px solid var(--border);
-    gap:4px;
+    gap:4px;overflow-x:auto;
   }
   .sidebar-section,.sidebar-divider,.sidebar-day{display:none;}
-  .sidebar-item{width:auto;padding:7px 13px;}
+  .sidebar-item{width:auto;padding:7px 13px;flex-shrink:0;}
   .admin-main{padding:16px;}
 }
 
 @media(max-width:768px){
-  nav{padding:0 16px;height:54px;}
+  nav{padding:0 14px;height:54px;gap:8px;}
   .nav-title span{display:none;}
   #livePill{display:none;}
+
+  /* Schema - full width swipeable cards */
   #week{
-    display:flex;overflow-x:auto;gap:12px;
-    padding:14px 16px;scroll-snap-type:x mandatory;
+    display:flex;overflow-x:auto;gap:10px;
+    padding:12px;scroll-snap-type:x mandatory;
     -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
   }
-  .day-col{min-width:80%;scroll-snap-align:start;flex-shrink:0;}
+  #week::-webkit-scrollbar{display:none;}
+  .day-col{
+    min-width:calc(100vw - 48px);
+    scroll-snap-align:start;flex-shrink:0;
+  }
+
+  /* Admin stats */
   .stats-row{grid-template-columns:1fr 1fr;}
+  .stat-num{font-size:24px;}
+
+  /* Admin table - hide lärare column on small screens */
+  thead th:nth-child(2),tbody td:nth-child(2){display:none;}
+
+  /* Table actions column narrower */
+  thead th:last-child,tbody td:last-child{padding-left:6px;padding-right:6px;}
+
+  /* Days grid full width */
+  .days-grid{grid-template-columns:1fr;}
+
+  /* Colors 2 col */
+  .color-grid{grid-template-columns:1fr 1fr;}
+
+  /* Form grid 2 col */
+  .form-grid{grid-template-columns:1fr 1fr;}
+
+  /* Modal full width */
+  .modal{padding:22px 18px;border-radius:16px;}
+
+  /* Card padding smaller */
+  .card{padding:16px;}
+  .admin-main{padding:12px;}
+  .page-header{margin-bottom:16px;}
+  .page-header h2{font-size:17px;}
+
+  /* Sidebar scrolls horizontally */
+  .admin-sidebar{
+    overflow-x:auto;padding:8px 10px;gap:5px;
+    scrollbar-width:none;
+  }
+  .admin-sidebar::-webkit-scrollbar{display:none;}
+  .sidebar-item{font-size:12px;padding:6px 12px;}
+
+  /* Toast bottom center */
+  #toast{
+    left:50%;right:auto;
+    transform:translateX(-50%) translateY(80px);
+    bottom:16px;
+    max-width:90vw;
+  }
+  #toast.show{transform:translateX(-50%) translateY(0);}
 }
 
 @media(max-width:480px){
-  .form-grid{grid-template-columns:1fr 1fr;}
-  .days-grid{grid-template-columns:1fr;}
+  nav{padding:0 12px;}
+  .nav-logo{width:30px;height:30px;}
+  .nav-title{font-size:14px;}
+  .btn{padding:7px 12px;font-size:12px;}
   .btn .btn-text{display:none;}
+  .day-head h2{font-size:13px;}
+  .lesson .l-name{font-size:13px;}
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .color-grid{grid-template-columns:1fr;}
+  .form-grid{grid-template-columns:1fr;}
+  .tbl-wrap{border-radius:10px;}
 }
 </style>
 </head>
@@ -559,6 +618,7 @@ footer{
 <!-- SCHEMA VIEW -->
 <div id="viewSchema">
   <div id="week"></div>
+  <div id="swipeDots" style="display:none;justify-content:center;gap:6px;padding:8px 0 16px;"></div>
 </div>
 
 <!-- ADMIN VIEW -->
@@ -855,7 +915,28 @@ function renderSchema(){
 
     wrap.appendChild(col);
   });
-  scrollToToday();updateLive();
+  scrollToToday();updateLive();renderSwipeDots();
+}
+
+function renderSwipeDots(){
+  const dotsEl=document.getElementById('swipeDots');
+  const isMobile=window.innerWidth<=768;
+  if(!isMobile){dotsEl.style.display='none';return;}
+  const days=Object.keys(schema);
+  dotsEl.style.display='flex';
+  dotsEl.innerHTML=days.map((d,i)=>`
+    <div style="width:8px;height:8px;border-radius:50%;background:${i===0?'var(--accent)':'var(--border2)'};transition:0.2s;" id="dot-${i}"></div>
+  `).join('');
+
+  // Update dot on scroll
+  const week=document.getElementById('week');
+  week.onscroll=()=>{
+    const idx=Math.round(week.scrollLeft/(week.offsetWidth));
+    days.forEach((_,i)=>{
+      const dot=document.getElementById('dot-'+i);
+      if(dot) dot.style.background=i===idx?'var(--accent)':'var(--border2)';
+    });
+  };
 }
 
 function scrollToToday(){
