@@ -422,6 +422,23 @@ input:checked+.toggle-track::after{transform:translateX(19px);background:var(--a
 .empty-state i{font-size:32px;margin-bottom:10px;opacity:0.35;display:block;}
 .empty-state p{font-size:13px;}
 
+/* OFF-DAY */
+.off-day-col{opacity:0.75;}
+.off-day-banner{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:36px 12px;gap:8px;
+}
+.off-day-banner i{font-size:26px;color:var(--muted2);}
+.off-day-banner span{font-size:14px;font-weight:600;color:var(--muted);text-align:center;}
+.label-input{
+  width:100%;padding:7px 10px;border-radius:8px;
+  border:1.5px solid var(--border2);
+  background:var(--bg2);color:var(--text);
+  font-family:'Inter',sans-serif;font-size:13px;
+  margin-top:10px;transition:0.12s;
+}
+.label-input:focus{outline:none;border-color:var(--accent);background:white;}
+
 /* TOAST */
 #toast{
   position:fixed;bottom:22px;right:22px;z-index:500;
@@ -703,10 +720,12 @@ const DEFAULT_COLORS = {
 };
 
 const DEFAULT_DISABLED = {Måndag:false,Tisdag:false,Onsdag:false,Torsdag:false,Fredag:false};
+const DEFAULT_LABELS   = {Måndag:'',Tisdag:'',Onsdag:'',Torsdag:'',Fredag:''};
 
 let schema   = JSON.parse(localStorage.getItem('s7a_schema')  ||'null') || JSON.parse(JSON.stringify(DEFAULT_SCHEMA));
 let colors   = JSON.parse(localStorage.getItem('s7a_colors')  ||'null') || JSON.parse(JSON.stringify(DEFAULT_COLORS));
 let disabled = JSON.parse(localStorage.getItem('s7a_disabled')||'null') || JSON.parse(JSON.stringify(DEFAULT_DISABLED));
+let dayLabels= JSON.parse(localStorage.getItem('s7a_labels')  ||'null') || JSON.parse(JSON.stringify(DEFAULT_LABELS));
 let changes  = JSON.parse(localStorage.getItem('s7a_changes') ||'[]');
 let currentDay = 'Måndag';
 let editDay = null, editIdx = null;
@@ -716,6 +735,7 @@ function save(){
   localStorage.setItem('s7a_schema',   JSON.stringify(schema));
   localStorage.setItem('s7a_colors',   JSON.stringify(colors));
   localStorage.setItem('s7a_disabled', JSON.stringify(disabled));
+  localStorage.setItem('s7a_labels',   JSON.stringify(dayLabels));
   localStorage.setItem('s7a_changes',  JSON.stringify(changes.slice(-10)));
 }
 
@@ -794,31 +814,45 @@ function renderSchema(){
   wrap.innerHTML='';
   const today=DAYS[new Date().getDay()];
   Object.keys(schema).forEach(day=>{
-    if(disabled[day]) return;
     const isToday=day===today;
+    const isOff=disabled[day];
     const col=document.createElement('div');
-    col.className='day-col'+(isToday?' today-col':'');
+    col.className='day-col'+(isToday?' today-col':'')+(isOff?' off-day-col':'');
     col.dataset.day=day;
+
+    const label=dayLabels[day]||'Ledigt';
+
     col.innerHTML=`
       <div class="day-head">
         <h2>${day}</h2>
         ${isToday?'<span class="today-badge">Idag</span>':''}
+        ${isOff?'<span style="font-size:10px;font-weight:700;background:#fee2e2;color:#dc2626;padding:2px 8px;border-radius:50px;">Stängd</span>':''}
       </div>
-      <div class="lessons-wrap"></div>
+      ${isOff
+        ? `<div class="off-day-banner">
+             <i class="fa-solid fa-door-closed"></i>
+             <span>${label}</span>
+           </div>`
+        : '<div class="lessons-wrap"></div>'
+      }
     `;
-    schema[day].forEach(l=>{
-      const bg=getColor(l.subject),fg=textCol(bg);
-      const div=document.createElement('div');
-      div.className='lesson';div.dataset.start=l.start;div.dataset.day=day;
-      div.style.background=bg;div.style.color=fg;
-      div.innerHTML=`
-        <div class="l-time">${l.start}</div>
-        <div class="l-name">${l.subject}</div>
-        ${l.teacher?`<div class="l-teacher"><i class="fa-solid fa-user" style="font-size:8px"></i> ${l.teacher}</div>`:''}
-        <div class="l-time">${l.end}</div>
-      `;
-      col.querySelector('.lessons-wrap').appendChild(div);
-    });
+
+    if(!isOff){
+      schema[day].forEach(l=>{
+        const bg=getColor(l.subject),fg=textCol(bg);
+        const div=document.createElement('div');
+        div.className='lesson';div.dataset.start=l.start;div.dataset.day=day;
+        div.style.background=bg;div.style.color=fg;
+        div.innerHTML=`
+          <div class="l-time">${l.start}</div>
+          <div class="l-name">${l.subject}</div>
+          ${l.teacher?`<div class="l-teacher"><i class="fa-solid fa-user" style="font-size:8px"></i> ${l.teacher}</div>`:''}
+          <div class="l-time">${l.end}</div>
+        `;
+        col.querySelector('.lessons-wrap').appendChild(div);
+      });
+    }
+
     wrap.appendChild(col);
   });
   scrollToToday();updateLive();
@@ -985,6 +1019,7 @@ function renderDaysGrid(){
   const grid=document.getElementById('daysGrid');grid.innerHTML='';
   Object.keys(schema).forEach(day=>{
     const isOff=disabled[day];
+    const lbl=dayLabels[day]||'';
     const card=document.createElement('div');
     card.className='day-manage-card'+(isOff?' disabled':'');
     card.innerHTML=`
@@ -996,22 +1031,38 @@ function renderDaysGrid(){
         </label>
       </div>
       <div class="day-mc-meta">${schema[day].length} lektioner &nbsp;·&nbsp;
-        ${isOff?'<span style="color:var(--accent2)">Inaktiv</span>':'<span style="color:var(--accent3)">Aktiv</span>'}
+        ${isOff?'<span style="color:var(--accent2)">Stängd</span>':'<span style="color:var(--accent3)">Aktiv</span>'}
       </div>
       <div style="margin-top:8px;font-size:12px;color:var(--muted2);display:flex;align-items:center;gap:5px;">
         ${isOff
-          ?'<i class="fa-solid fa-ban" style="color:var(--accent2)"></i> Visas inte i schemat'
-          :'<i class="fa-solid fa-circle-check" style="color:var(--accent3)"></i> Visas i schemat'}
-      </div>`;
+          ?'<i class="fa-solid fa-door-closed" style="color:var(--accent2)"></i> Visas som stängd dag'
+          :'<i class="fa-solid fa-circle-check" style="color:var(--accent3)"></i> Visas normalt i schemat'}
+      </div>
+      ${isOff?`
+        <div style="margin-top:12px;">
+          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);display:block;margin-bottom:5px;">
+            <i class="fa-solid fa-tag" style="margin-right:4px;"></i>Text som visas
+          </label>
+          <input class="label-input" placeholder="t.ex. Studiedag, Lov, Inställd…"
+            value="${lbl}"
+            oninput="updateLabel('${day}',this.value)"
+          >
+        </div>`:''}
+    `;
     grid.appendChild(card);
   });
+}
+
+function updateLabel(day,val){
+  dayLabels[day]=val;
+  save();renderSchema();
 }
 
 function toggleDay(day,active){
   disabled[day]=!active;
   save();renderSchema();renderDaysGrid();buildSidebarDays();
-  logChange(`${active?'Aktiverade':'Avaktiverade'} ${day}`);
-  toast(`${day} ${active?'aktiverad':'avaktiverad'}`,active?'fa-circle-check':'fa-ban');
+  logChange(`${active?'Aktiverade':'Stängde'} ${day}${!active&&dayLabels[day]?' ('+dayLabels[day]+')':''}`);
+  toast(`${day} ${active?'aktiverad':'stängd'}`,active?'fa-circle-check':'fa-door-closed');
 }
 
 function renderColorGrid(){
