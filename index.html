@@ -3,285 +3,1406 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Klass 7A – Schema</title>
-
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-body{
-  margin:0;
-  font-family:"Inter","Segoe UI",Arial,sans-serif;
-  background:linear-gradient(135deg,#eef2ff,#f8fafc);
-  color:#1f2937;
+:root {
+  --bg: #0d0f1a;
+  --bg2: #13162a;
+  --card: #1a1d2e;
+  --card2: #1f2235;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #f0f2ff;
+  --muted: #7b82a8;
+  --muted2: #545878;
+  --accent: #6c63ff;
+  --accent2: #ff6584;
+  --accent3: #43e97b;
+  --glow: rgba(108,99,255,0.3);
+  --radius: 16px;
+  --radius2: 12px;
+
+  --c-MA: #3b82f6;
+  --c-SV: #eab308;
+  --c-SO: #f43f5e;
+  --c-NO: #22c55e;
+  --c-EN: #f97316;
+  --c-IDH: #10b981;
+  --c-SLÖJD: #a855f7;
+  --c-MENTOR: #8b5cf6;
+  --c-LUNCH: #374151;
+  --c-BLOCK: #64748b;
+  --c-MU: #fb923c;
 }
 
-/* HEADER */
-header{
-  position:sticky;
-  top:0;
-  z-index:10;
-  background:rgba(255,255,255,0.9);
-  backdrop-filter:blur(10px);
-  padding:20px;
-  text-align:center;
-  border-bottom:1px solid rgba(0,0,0,0.05);
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-#dayTitle{font-size:28px;}
-#liveInfo{font-size:16px;margin-top:6px;}
+/* ── BACKGROUND MESH ── */
+body::before {
+  content:'';
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(108,99,255,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 110%, rgba(255,101,132,0.08) 0%, transparent 60%);
+}
 
-/* WEEK DESKTOP */
-#week{
+/* ── LOGIN SCREEN ── */
+#loginScreen {
+  position:fixed;inset:0;z-index:1000;
+  display:flex;align-items:center;justify-content:center;
+  background: var(--bg);
+}
+
+#loginScreen::before {
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 60% 60% at 50% 50%, rgba(108,99,255,0.15) 0%, transparent 70%);
+  pointer-events:none;
+}
+
+.login-box {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 24px;
+  padding: 48px 44px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(108,99,255,0.1), inset 0 1px 0 rgba(255,255,255,0.05);
+  position:relative;z-index:1;
+  animation: fadeUp 0.5s ease;
+}
+
+@keyframes fadeUp {
+  from{transform:translateY(24px);opacity:0;}
+  to{transform:none;opacity:1;}
+}
+
+.login-icon {
+  width:72px;height:72px;border-radius:20px;
+  background: linear-gradient(135deg, var(--accent), #9c8fff);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 24px;
+  font-size:28px;
+  box-shadow: 0 8px 32px rgba(108,99,255,0.4);
+}
+
+.login-box h2 {
+  font-size:26px;font-weight:800;margin-bottom:6px;
+  letter-spacing:-0.5px;
+}
+
+.login-box p {font-size:14px;color:var(--muted);margin-bottom:32px;}
+
+.login-input-wrap {
+  position:relative;margin-bottom:16px;
+}
+
+.login-input-wrap i {
+  position:absolute;left:16px;top:50%;transform:translateY(-50%);
+  color:var(--muted2);font-size:16px;
+}
+
+#loginCode {
+  width:100%;padding:14px 16px 14px 46px;
+  background:var(--bg2);border:1.5px solid var(--border2);
+  border-radius:12px;color:var(--text);font-size:16px;
+  font-family:'JetBrains Mono',monospace;font-weight:600;
+  letter-spacing:3px;text-align:center;
+  transition:0.2s;
+}
+
+#loginCode:focus {
+  outline:none;border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(108,99,255,0.2);
+}
+
+#loginCode.shake {
+  animation: shake 0.4s ease;
+  border-color:var(--accent2)!important;
+}
+
+@keyframes shake {
+  0%,100%{transform:none;}
+  20%{transform:translateX(-6px);}
+  40%{transform:translateX(6px);}
+  60%{transform:translateX(-4px);}
+  80%{transform:translateX(4px);}
+}
+
+#loginBtn {
+  width:100%;padding:14px;border-radius:12px;
+  background:linear-gradient(135deg,var(--accent),#9c8fff);
+  color:white;font-size:15px;font-weight:700;
+  border:none;cursor:pointer;
+  font-family:'Outfit',sans-serif;
+  box-shadow:0 4px 20px rgba(108,99,255,0.4);
+  transition:0.2s;letter-spacing:0.3px;
+}
+
+#loginBtn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(108,99,255,0.5);}
+#loginBtn:active{transform:translateY(0);}
+
+#loginError {
+  margin-top:12px;font-size:13px;color:var(--accent2);
+  opacity:0;transition:0.2s;height:18px;
+}
+#loginError.show{opacity:1;}
+
+.login-hint {
+  margin-top:20px;font-size:12px;color:var(--muted2);
+}
+
+/* ── TOP NAV ── */
+nav {
+  position:sticky;top:0;z-index:50;
+  background:rgba(13,15,26,0.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:16px;
+  padding:0 24px;height:62px;
+}
+
+.nav-brand {
+  display:flex;align-items:center;gap:12px;flex:1;
+}
+
+.nav-logo {
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,var(--accent),#9c8fff);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+  box-shadow:0 4px 14px rgba(108,99,255,0.35);
+}
+
+.nav-title {
+  font-size:17px;font-weight:800;letter-spacing:-0.3px;
+}
+
+.nav-title span{color:var(--muted);font-weight:400;font-size:13px;display:block;margin-top:-1px;}
+
+/* LIVE PILL */
+#livePill {
+  display:flex;align-items:center;gap:8px;
+  background:var(--card2);border:1px solid var(--border2);
+  border-radius:50px;padding:7px 16px;
+  font-size:13px;font-weight:500;
+  flex-shrink:0;
+}
+
+.live-dot {
+  width:7px;height:7px;border-radius:50%;
+  background:var(--accent3);
+  box-shadow:0 0 8px var(--accent3);
+  animation:livePulse 2s infinite;
+}
+
+@keyframes livePulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(1.4);}}
+
+.nav-btns{display:flex;gap:8px;}
+
+/* BUTTONS */
+.btn {
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 18px;border-radius:50px;
+  font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;
+  border:none;cursor:pointer;transition:all 0.18s;
+  white-space:nowrap;
+}
+
+.btn-primary {
+  background:linear-gradient(135deg,var(--accent),#9c8fff);
+  color:white;box-shadow:0 4px 14px rgba(108,99,255,0.3);
+}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(108,99,255,0.45);}
+
+.btn-ghost {
+  background:var(--card2);color:var(--text);
+  border:1px solid var(--border2);
+}
+.btn-ghost:hover{background:var(--card);border-color:rgba(255,255,255,0.18);}
+
+.btn-danger {
+  background:rgba(244,63,94,0.15);
+  color:#f87191;border:1px solid rgba(244,63,94,0.2);
+}
+.btn-danger:hover{background:rgba(244,63,94,0.25);}
+
+.btn-success {
+  background:rgba(34,197,94,0.15);
+  color:#4ade80;border:1px solid rgba(34,197,94,0.2);
+}
+.btn-success:hover{background:rgba(34,197,94,0.25);}
+
+.btn-warn {
+  background:rgba(234,179,8,0.12);
+  color:#facc15;border:1px solid rgba(234,179,8,0.2);
+}
+.btn-warn:hover{background:rgba(234,179,8,0.22);}
+
+.btn-sm{padding:5px 12px;font-size:12px;}
+.btn-xs{padding:4px 10px;font-size:11px;}
+
+.btn-logout {
+  background:transparent;color:var(--muted);
+  border:1px solid var(--border);font-size:12px;
+  padding:6px 12px;
+}
+.btn-logout:hover{color:var(--accent2);border-color:rgba(244,63,94,0.3);}
+
+/* ── VIEWS ── */
+#viewSchema, #viewAdmin {display:none;}
+#viewSchema.active, #viewAdmin.active {display:block;}
+
+/* ── SCHEMA ── */
+#week {
   display:grid;
   grid-template-columns:repeat(5,1fr);
-  gap:20px;
-  padding:30px;
-  max-width:1400px;
+  gap:16px;
+  padding:24px;
+  max-width:1440px;
   margin:0 auto;
+  position:relative;z-index:1;
 }
 
-/* DAY CARD */
-.day{
-  background:rgba(255,255,255,0.85);
+.day-col {
+  background:var(--card);
+  border:1px solid var(--border);
   border-radius:20px;
-  padding:16px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+  overflow:hidden;
+  transition:0.2s;
+  animation: colIn 0.4s ease both;
+}
+
+@keyframes colIn {
+  from{opacity:0;transform:translateY(12px);}
+  to{opacity:1;transform:none;}
+}
+
+.day-col:nth-child(1){animation-delay:.05s;}
+.day-col:nth-child(2){animation-delay:.1s;}
+.day-col:nth-child(3){animation-delay:.15s;}
+.day-col:nth-child(4){animation-delay:.2s;}
+.day-col:nth-child(5){animation-delay:.25s;}
+
+.day-col.today-col {
+  border-color: rgba(108,99,255,0.4);
+  box-shadow:0 0 0 1px rgba(108,99,255,0.2), 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.day-head {
+  padding:14px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+
+.day-head h2 {
+  font-size:15px;font-weight:700;letter-spacing:-0.2px;
+}
+
+.today-badge {
+  font-size:10px;font-weight:700;
+  background:linear-gradient(135deg,var(--accent),#9c8fff);
+  color:white;padding:3px 9px;border-radius:50px;
+  text-transform:uppercase;letter-spacing:0.05em;
+}
+
+.lessons-wrap{padding:12px;}
+
+.lesson {
+  border-radius:11px;padding:10px 12px;
+  margin-bottom:7px;
+  position:relative;overflow:hidden;
+  transition:0.15s;cursor:default;
+}
+
+.lesson::before {
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.08),transparent);
+  pointer-events:none;
+}
+
+.lesson:hover{transform:scale(1.02);}
+
+.lesson .l-time {font-size:10px;opacity:0.6;font-family:'JetBrains Mono',monospace;}
+.lesson .l-name {font-size:15px;font-weight:800;letter-spacing:-0.2px;margin:2px 0;}
+.lesson .l-teacher {font-size:10px;opacity:0.65;display:flex;align-items:center;gap:4px;}
+
+.lesson.current {
+  outline:2.5px solid white;
+  box-shadow:0 0 0 4px rgba(255,255,255,0.12), 0 4px 20px rgba(0,0,0,0.3);
+  transform:scale(1.04);z-index:2;
+}
+
+.lesson.next-up {
+  outline:2px dashed rgba(255,255,255,0.5);
+}
+
+/* ── ADMIN ── */
+.admin-layout {
+  display:grid;
+  grid-template-columns:240px 1fr;
+  min-height:calc(100vh - 62px);
+  position:relative;z-index:1;
+}
+
+/* SIDEBAR */
+.admin-sidebar {
+  background:var(--card);
+  border-right:1px solid var(--border);
+  padding:24px 16px;
+  display:flex;flex-direction:column;gap:4px;
+}
+
+.sidebar-label {
+  font-size:10px;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.08em;color:var(--muted2);
+  padding:16px 12px 8px;
+}
+
+.sidebar-item {
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;border-radius:10px;
+  font-size:14px;font-weight:500;cursor:pointer;
+  color:var(--muted);transition:0.15s;
+  border:none;background:none;width:100%;text-align:left;
+  font-family:'Outfit',sans-serif;
+}
+
+.sidebar-item i{width:18px;text-align:center;font-size:14px;}
+
+.sidebar-item:hover{background:var(--card2);color:var(--text);}
+.sidebar-item.active{background:rgba(108,99,255,0.15);color:var(--accent);font-weight:600;}
+.sidebar-item.active i{color:var(--accent);}
+
+.sidebar-divider{height:1px;background:var(--border);margin:12px 0;}
+
+.sidebar-day-item {
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 14px;border-radius:10px;
+  font-size:13px;font-weight:500;cursor:pointer;
+  color:var(--muted);transition:0.15s;
+}
+
+.sidebar-day-item:hover{background:var(--card2);color:var(--text);}
+.sidebar-day-item.active{background:rgba(108,99,255,0.15);color:var(--accent);font-weight:600;}
+
+.day-count {
+  font-size:11px;background:var(--bg2);
+  padding:2px 8px;border-radius:50px;color:var(--muted2);
+}
+
+/* MAIN CONTENT */
+.admin-main {
+  padding:28px;overflow-y:auto;
+}
+
+.page-header {
+  margin-bottom:28px;
+}
+
+.page-header h2 {
+  font-size:22px;font-weight:800;letter-spacing:-0.4px;
+  display:flex;align-items:center;gap:10px;
+}
+
+.page-header p {font-size:14px;color:var(--muted);margin-top:4px;}
+
+/* CARDS */
+.card {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:24px;
+  margin-bottom:20px;
+}
+
+.card-title {
+  font-size:15px;font-weight:700;margin-bottom:18px;
+  display:flex;align-items:center;gap:8px;
+}
+
+.card-title i{color:var(--accent);}
+
+/* TABLE */
+.tbl-wrap {background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:20px;}
+
+table{width:100%;border-collapse:collapse;}
+
+thead th {
+  background:var(--bg2);padding:11px 16px;
+  text-align:left;font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);
+  border-bottom:1px solid var(--border);
+}
+
+tbody td {
+  padding:12px 16px;border-bottom:1px solid var(--border);
+  font-size:14px;vertical-align:middle;
+}
+
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover td{background:rgba(255,255,255,0.02);}
+
+.subj-pill {
+  display:inline-block;padding:4px 12px;border-radius:6px;
+  font-size:12px;font-weight:800;font-family:'JetBrains Mono',monospace;
+}
+
+.time-tag {
+  font-family:'JetBrains Mono',monospace;font-size:13px;
+  color:var(--muted);background:var(--bg2);
+  padding:3px 8px;border-radius:6px;
+}
+
+/* FORM */
+.form-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:14px;
+}
+
+.fg {display:flex;flex-direction:column;gap:6px;}
+
+.fg label {
+  font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.06em;color:var(--muted);
+}
+
+.fg input, .fg select {
+  padding:10px 13px;border-radius:10px;
+  border:1.5px solid var(--border2);
+  background:var(--bg2);color:var(--text);
+  font-family:'Outfit',sans-serif;font-size:14px;
+  transition:0.15s;
+}
+
+.fg input:focus, .fg select:focus {
+  outline:none;border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(108,99,255,0.15);
+  background:var(--card2);
+}
+
+.fg select option{background:var(--bg2);}
+
+/* COLOR GRID */
+.color-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:12px;
+}
+
+.color-card {
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:12px;padding:14px;
+  display:flex;align-items:center;gap:12px;
+  transition:0.15s;
+}
+
+.color-card:hover{border-color:var(--border2);}
+
+.col-swatch {
+  width:42px;height:42px;border-radius:10px;flex-shrink:0;
+  box-shadow:0 4px 12px rgba(0,0,0,0.3);
   transition:0.2s;
 }
 
-.day:hover{
-  transform:translateY(-4px);
+.col-info {flex:1;}
+.col-info strong {font-size:14px;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.col-info small {display:block;font-size:11px;color:var(--muted);margin-top:2px;}
+
+.col-picker {
+  width:34px;height:34px;border:none;
+  border-radius:8px;cursor:pointer;padding:0;
+  background:none;flex-shrink:0;
 }
 
-.day h2{
-  text-align:center;
+/* DAYS MANAGEMENT */
+.days-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:14px;
+}
+
+.day-manage-card {
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:14px;padding:18px;
+  transition:0.15s;
+}
+
+.day-manage-card:hover{border-color:var(--border2);}
+
+.day-manage-card.disabled {
+  opacity:0.45;
+  border-style:dashed;
+}
+
+.day-mc-head {
+  display:flex;align-items:center;justify-content:space-between;
   margin-bottom:12px;
-  font-size:18px;
 }
 
-/* LESSON */
-.lesson{
-  border-radius:14px;
-  padding:12px;
-  margin-bottom:10px;
+.day-mc-head h3 {font-size:16px;font-weight:700;}
+
+.day-mc-meta {font-size:12px;color:var(--muted);}
+
+.toggle-day {
+  position:relative;width:44px;height:24px;flex-shrink:0;
+}
+
+.toggle-day input{opacity:0;width:0;height:0;}
+
+.toggle-track {
+  position:absolute;cursor:pointer;inset:0;
+  background:var(--bg);border-radius:50px;
+  transition:0.3s;border:1px solid var(--border2);
+}
+
+.toggle-track::after {
+  content:'';position:absolute;
+  width:18px;height:18px;border-radius:50%;
+  left:2px;top:2px;background:var(--muted2);
+  transition:0.3s;
+}
+
+input:checked + .toggle-track {
+  background:rgba(108,99,255,0.2);
+  border-color:var(--accent);
+}
+
+input:checked + .toggle-track::after {
+  transform:translateX(20px);
+  background:var(--accent);
+  box-shadow:0 0 8px rgba(108,99,255,0.5);
+}
+
+/* STATS */
+.stats-row {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:14px;margin-bottom:24px;
+}
+
+.stat-card {
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:18px;
   text-align:center;
-  font-size:14px;
-  transition:0.2s;
 }
 
-.lesson .time{font-size:11px;opacity:0.7;}
-.lesson .subject{font-size:16px;font-weight:600;margin:4px 0;}
-
-.current{
-  outline:3px solid black;
-  transform:scale(1.04);
+.stat-card .stat-num {
+  font-size:32px;font-weight:900;
+  font-family:'JetBrains Mono',monospace;
+  background:linear-gradient(135deg,var(--accent),#9c8fff);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
 }
 
-.next{
-  outline:2px dashed black;
+.stat-card .stat-label {font-size:12px;color:var(--muted);margin-top:4px;}
+
+/* MODAL */
+.modal-bg {
+  display:none;position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;
 }
 
-/* COLORS */
-.MA{background:#3b82f6;color:white;}
-.SV{background:#fde047;}
-.SO{background:#f43f5e;color:white;}
-.NO{background:#22c55e;}
-.EN{background:#f97316;color:white;}
-.IDH{background:#10b981;}
-.SLÖJD{background:#a855f7;color:white;}
-.MENTOR{background:#8b5cf6;color:white;}
-.LUNCH{background:#4b5563;color:white;}
-.BLOCK{background:#9ca3af;}
-.MU1OCHBL1,.MU2OCHBL2{background:#fb923c;}
+.modal-bg.open{display:flex;}
 
-/* MOBILE */
-@media (max-width:768px){
+.modal {
+  background:var(--card2);
+  border:1px solid var(--border2);
+  border-radius:22px;padding:28px;
+  width:90%;max-width:480px;
+  box-shadow:0 30px 70px rgba(0,0,0,0.5);
+  animation:modalIn 0.2s ease;
+}
+
+@keyframes modalIn{from{transform:scale(0.92) translateY(14px);opacity:0;}to{transform:none;opacity:1;}}
+
+.modal h3{font-size:18px;font-weight:800;margin-bottom:20px;letter-spacing:-0.3px;}
+
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:22px;}
+
+/* TOAST */
+#toast {
+  position:fixed;bottom:24px;right:24px;z-index:500;
+  background:var(--card2);color:var(--text);
+  border:1px solid var(--border2);
+  padding:13px 20px;border-radius:14px;
+  font-size:14px;font-weight:500;
+  transform:translateY(80px);opacity:0;
+  transition:0.3s cubic-bezier(.34,1.56,.64,1);
+  display:flex;align-items:center;gap:10px;
+  box-shadow:0 10px 40px rgba(0,0,0,0.4);
+  max-width:320px;
+}
+
+#toast.show{transform:translateY(0);opacity:1;}
+#toast .t-icon{font-size:16px;}
+
+footer {
+  text-align:center;padding:20px;font-size:12px;
+  color:var(--muted2);border-top:1px solid var(--border);
+  position:relative;z-index:1;
+}
+
+/* EMPTY */
+.empty-state {
+  text-align:center;padding:48px 20px;
+  color:var(--muted);
+}
+.empty-state i{font-size:36px;margin-bottom:12px;opacity:0.4;display:block;}
+.empty-state p{font-size:14px;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .admin-layout{grid-template-columns:1fr;}
+  .admin-sidebar{
+    display:flex;flex-direction:row;flex-wrap:wrap;
+    gap:6px;padding:14px;border-right:none;
+    border-bottom:1px solid var(--border);
+  }
+  .sidebar-label{display:none;}
+  .sidebar-item{width:auto;padding:8px 14px;}
+  .sidebar-divider{display:none;}
+  .sidebar-day-item{display:none;}
+  .admin-main{padding:16px;}
+}
+
+@media(max-width:768px){
+  nav{padding:0 14px;height:56px;}
+  .nav-title span{display:none;}
+  #livePill{display:none;}
+
   #week{
-    display:flex;
-    overflow-x:auto;
-    gap:14px;
-    padding:14px;
-    scroll-snap-type:x mandatory;
+    display:flex;overflow-x:auto;gap:12px;
+    padding:14px;scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
   }
 
-  .day{
-    min-width:85%;
-    scroll-snap-align:start;
-  }
-
-  .day h2{
-    position:sticky;
-    top:0;
-    background:white;
-    padding:8px;
-    border-radius:10px;
-  }
+  .day-col{min-width:78%;scroll-snap-align:start;flex-shrink:0;}
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .color-grid{grid-template-columns:1fr 1fr;}
+  .form-grid{grid-template-columns:1fr 1fr;}
 }
 
-/* FOOTER */
-footer{
-  text-align:center;
-  padding:20px;
-  font-size:13px;
-  color:#6b7280;
+@media(max-width:480px){
+  .login-box{padding:36px 24px;}
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .days-grid{grid-template-columns:1fr;}
+  nav .btn .btn-text{display:none;}
 }
 </style>
 </head>
-
 <body>
 
-<header>
-<h1 id="dayTitle"><span>Idag</span></h1>
-<div id="liveInfo">Laddar...</div>
-</header>
+<!-- ── LOGIN ── -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-icon">🔐</div>
+    <h2>Admin Access</h2>
+    <p>Ange din kod för att komma åt adminpanelen</p>
+    <div class="login-input-wrap">
+      <i class="fa-solid fa-key"></i>
+      <input type="password" id="loginCode" placeholder="••••••••" autocomplete="off" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button id="loginBtn" onclick="doLogin()"><i class="fa-solid fa-arrow-right-to-bracket"></i> Logga in</button>
+    <div id="loginError">Fel kod – försök igen</div>
+    <p class="login-hint">Klass 7A Schemahantering</p>
+  </div>
+</div>
 
-<div id="week"></div>
+<!-- ── NAV ── -->
+<nav id="mainNav" style="display:none;">
+  <div class="nav-brand">
+    <div class="nav-logo">📅</div>
+    <div class="nav-title">
+      Klass 7A
+      <span>Veckoschema</span>
+    </div>
+  </div>
+  <div id="livePill">
+    <span class="live-dot"></span>
+    <span id="liveText">Laddar...</span>
+  </div>
+  <div class="nav-btns">
+    <button class="btn btn-ghost" id="btnSchema" onclick="showView('schema')">
+      <i class="fa-solid fa-calendar-week"></i> <span class="btn-text">Schema</span>
+    </button>
+    <button class="btn btn-primary" id="btnAdmin" onclick="showView('admin')">
+      <i class="fa-solid fa-sliders"></i> <span class="btn-text">Admin</span>
+    </button>
+    <button class="btn btn-logout" onclick="logout()">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+    </button>
+  </div>
+</nav>
 
-<footer>Utvecklad av Arkeljo Developer</footer>
+<!-- ── SCHEMA ── -->
+<div id="viewSchema">
+  <div id="week"></div>
+</div>
+
+<!-- ── ADMIN ── -->
+<div id="viewAdmin">
+  <div class="admin-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-label">Navigation</div>
+      <button class="sidebar-item active" onclick="adminPage('oversikt')" id="si-oversikt">
+        <i class="fa-solid fa-chart-pie"></i> Översikt
+      </button>
+      <button class="sidebar-item" onclick="adminPage('lektioner')" id="si-lektioner">
+        <i class="fa-solid fa-list-ul"></i> Lektioner
+      </button>
+      <button class="sidebar-item" onclick="adminPage('ny')" id="si-ny">
+        <i class="fa-solid fa-plus"></i> Ny lektion
+      </button>
+      <button class="sidebar-item" onclick="adminPage('dagar')" id="si-dagar">
+        <i class="fa-solid fa-calendar-xmark"></i> Hantera dagar
+      </button>
+      <button class="sidebar-item" onclick="adminPage('farger')" id="si-farger">
+        <i class="fa-solid fa-palette"></i> Färger
+      </button>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-label">Dagar</div>
+      <div id="sidebarDays"></div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="admin-main">
+
+      <!-- ÖVERSIKT -->
+      <div id="pageOversikt">
+        <div class="page-header">
+          <h2><i class="fa-solid fa-chart-pie"></i> Översikt</h2>
+          <p>Statistik och snabb överblick</p>
+        </div>
+        <div class="stats-row" id="statsRow"></div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Senaste ändringar</div>
+          <div id="recentChanges" style="font-size:13px;color:var(--muted);">Inga ändringar ännu.</div>
+        </div>
+      </div>
+
+      <!-- LEKTIONER -->
+      <div id="pageLektioner" style="display:none;">
+        <div class="page-header" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:14px;">
+          <div>
+            <h2><i class="fa-solid fa-list-ul"></i> Lektioner</h2>
+            <p>Välj en dag att redigera</p>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;" id="dayBtnRow"></div>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Ämne</th><th>Lärare</th><th>Start</th><th>Slut</th><th>Åtgärder</th>
+              </tr>
+            </thead>
+            <tbody id="lessonsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- NY LEKTION -->
+      <div id="pageNy" style="display:none;">
+        <div class="page-header">
+          <h2><i class="fa-solid fa-plus-circle"></i> Ny lektion</h2>
+          <p>Lägg till en lektion i schemat</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-pen-to-square"></i> Fyll i uppgifter</div>
+          <div class="form-grid">
+            <div class="fg">
+              <label>Dag</label>
+              <select id="nDay"></select>
+            </div>
+            <div class="fg">
+              <label>Ämne</label>
+              <input id="nSubject" placeholder="t.ex. MA" maxlength="20">
+            </div>
+            <div class="fg">
+              <label>Lärare</label>
+              <input id="nTeacher" placeholder="t.ex. Anna Svensson">
+            </div>
+            <div class="fg">
+              <label>Starttid</label>
+              <input id="nStart" type="time" value="08:00">
+            </div>
+            <div class="fg">
+              <label>Sluttid</label>
+              <input id="nEnd" type="time" value="09:00">
+            </div>
+          </div>
+          <div style="margin-top:20px;">
+            <button class="btn btn-primary" onclick="addLesson()">
+              <i class="fa-solid fa-plus"></i> Lägg till lektion
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- HANTERA DAGAR -->
+      <div id="pageDagar" style="display:none;">
+        <div class="page-header">
+          <h2><i class="fa-solid fa-calendar-xmark"></i> Hantera dagar</h2>
+          <p>Stäng av dagar vid studiedagar eller lov</p>
+        </div>
+        <div class="days-grid" id="daysGrid"></div>
+      </div>
+
+      <!-- FÄRGER -->
+      <div id="pageFarger" style="display:none;">
+        <div class="page-header">
+          <h2><i class="fa-solid fa-palette"></i> Ämnefärger</h2>
+          <p>Klicka på färgrutan för att ändra färg</p>
+        </div>
+        <div class="color-grid" id="colorGrid"></div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-bg" id="editModal">
+  <div class="modal">
+    <h3><i class="fa-solid fa-pen" style="color:var(--accent);margin-right:8px"></i>Redigera lektion</h3>
+    <div class="form-grid">
+      <div class="fg">
+        <label>Ämne</label>
+        <input id="eSubject" maxlength="20">
+      </div>
+      <div class="fg">
+        <label>Lärare</label>
+        <input id="eTeacher">
+      </div>
+      <div class="fg">
+        <label>Starttid</label>
+        <input id="eStart" type="time">
+      </div>
+      <div class="fg">
+        <label>Sluttid</label>
+        <input id="eEnd" type="time">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Avbryt</button>
+      <button class="btn btn-primary" onclick="saveEdit()"><i class="fa-solid fa-check"></i> Spara</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"><span class="t-icon">✅</span><span id="toastMsg"></span></div>
+
+<footer id="mainFooter" style="display:none;">Utvecklad av Arkeljo Developer</footer>
 
 <script>
-// SCHEMA
-let schema={
-"Måndag":[
-{start:"09:00",end:"09:20",subject:"MENTOR"},
-{start:"09:20",end:"10:20",subject:"MA"},
-{start:"10:30",end:"11:30",subject:"SV"},
-{start:"11:40",end:"12:30",subject:"SO"},
-{start:"12:30",end:"12:50",subject:"LUNCH"},
-{start:"13:10",end:"13:50",subject:"NO"},
-{start:"14:00",end:"14:50",subject:"EN"}
-],
-"Tisdag":[
-{start:"08:20",end:"09:10",subject:"BLOCK"},
-{start:"09:15",end:"10:15",subject:"MU1OCHBL1"},
-{start:"10:20",end:"11:20",subject:"MU2OCHBL2"},
-{start:"11:25",end:"12:25",subject:"MA"},
-{start:"12:25",end:"12:45",subject:"LUNCH"},
-{start:"13:05",end:"13:45",subject:"SV"},
-{start:"13:55",end:"14:35",subject:"SO"}
-],
-"Onsdag":[
-{start:"08:20",end:"09:20",subject:"SV"},
-{start:"09:40",end:"10:40",subject:"MA"},
-{start:"10:50",end:"11:40",subject:"SO"},
-{start:"11:40",end:"12:00",subject:"LUNCH"},
-{start:"12:25",end:"13:45",subject:"SLÖJD"},
-{start:"13:50",end:"14:50",subject:"EN"}
-],
-"Torsdag":[
-{start:"08:20",end:"09:30",subject:"IDH"},
-{start:"09:50",end:"10:50",subject:"NO"},
-{start:"11:15",end:"12:15",subject:"BLOCK"},
-{start:"12:15",end:"12:35",subject:"LUNCH"},
-{start:"12:50",end:"13:40",subject:"NO"},
-{start:"13:45",end:"14:30",subject:"SO"}
-],
-"Fredag":[
-{start:"08:00",end:"09:10",subject:"IDH"},
-{start:"09:20",end:"10:10",subject:"BLOCK"},
-{start:"10:20",end:"11:20",subject:"NO"},
-{start:"11:30",end:"11:50",subject:"LUNCH"},
-{start:"12:10",end:"12:50",subject:"SO"},
-{start:"13:00",end:"13:40",subject:"MA"}
-]
+// ════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════
+const PASS = 'Ghost67';
+
+const DEFAULT_SCHEMA = {
+  "Måndag":[
+    {start:"09:00",end:"09:20",subject:"MENTOR",teacher:""},
+    {start:"09:20",end:"10:20",subject:"MA",teacher:""},
+    {start:"10:30",end:"11:30",subject:"SV",teacher:""},
+    {start:"11:40",end:"12:30",subject:"SO",teacher:""},
+    {start:"12:30",end:"12:50",subject:"LUNCH",teacher:""},
+    {start:"13:10",end:"13:50",subject:"NO",teacher:""},
+    {start:"14:00",end:"14:50",subject:"EN",teacher:""}
+  ],
+  "Tisdag":[
+    {start:"08:20",end:"09:10",subject:"BLOCK",teacher:""},
+    {start:"09:15",end:"10:15",subject:"MU1OCHBL1",teacher:""},
+    {start:"10:20",end:"11:20",subject:"MU2OCHBL2",teacher:""},
+    {start:"11:25",end:"12:25",subject:"MA",teacher:""},
+    {start:"12:25",end:"12:45",subject:"LUNCH",teacher:""},
+    {start:"13:05",end:"13:45",subject:"SV",teacher:""},
+    {start:"13:55",end:"14:35",subject:"SO",teacher:""}
+  ],
+  "Onsdag":[
+    {start:"08:20",end:"09:20",subject:"SV",teacher:""},
+    {start:"09:40",end:"10:40",subject:"MA",teacher:""},
+    {start:"10:50",end:"11:40",subject:"SO",teacher:""},
+    {start:"11:40",end:"12:00",subject:"LUNCH",teacher:""},
+    {start:"12:25",end:"13:45",subject:"SLÖJD",teacher:""},
+    {start:"13:50",end:"14:50",subject:"EN",teacher:""}
+  ],
+  "Torsdag":[
+    {start:"08:20",end:"09:30",subject:"IDH",teacher:""},
+    {start:"09:50",end:"10:50",subject:"NO",teacher:""},
+    {start:"11:15",end:"12:15",subject:"BLOCK",teacher:""},
+    {start:"12:15",end:"12:35",subject:"LUNCH",teacher:""},
+    {start:"12:50",end:"13:40",subject:"NO",teacher:""},
+    {start:"13:45",end:"14:30",subject:"SO",teacher:""}
+  ],
+  "Fredag":[
+    {start:"08:00",end:"09:10",subject:"IDH",teacher:""},
+    {start:"09:20",end:"10:10",subject:"BLOCK",teacher:""},
+    {start:"10:20",end:"11:20",subject:"NO",teacher:""},
+    {start:"11:30",end:"11:50",subject:"LUNCH",teacher:""},
+    {start:"12:10",end:"12:50",subject:"SO",teacher:""},
+    {start:"13:00",end:"13:40",subject:"MA",teacher:""}
+  ]
 };
 
-// RENDER
-const weekEl=document.getElementById("week");
+const DEFAULT_COLORS = {
+  MA:"#3b82f6",SV:"#eab308",SO:"#f43f5e",NO:"#22c55e",
+  EN:"#f97316",IDH:"#10b981","SLÖJD":"#a855f7",
+  MENTOR:"#8b5cf6",LUNCH:"#374151",BLOCK:"#64748b",
+  MU1OCHBL1:"#fb923c",MU2OCHBL2:"#fb923c"
+};
 
-Object.keys(schema).forEach(day=>{
-  const d=document.createElement("div");
-  d.className="day";
-  d.dataset.day=day;
-  d.innerHTML=`<h2>${day}</h2>`;
+const DEFAULT_DISABLED = {
+  Måndag:false, Tisdag:false, Onsdag:false, Torsdag:false, Fredag:false
+};
 
-  schema[day].forEach(l=>{
-    const div=document.createElement("div");
-    div.className="lesson "+l.subject;
-    div.dataset.start=l.start;
-    div.dataset.day=day;
+let schema   = JSON.parse(localStorage.getItem('s7a_schema') ||'null') || JSON.parse(JSON.stringify(DEFAULT_SCHEMA));
+let colors   = JSON.parse(localStorage.getItem('s7a_colors') ||'null') || JSON.parse(JSON.stringify(DEFAULT_COLORS));
+let disabled = JSON.parse(localStorage.getItem('s7a_disabled')||'null') || JSON.parse(JSON.stringify(DEFAULT_DISABLED));
+let changes  = JSON.parse(localStorage.getItem('s7a_changes')||'[]');
+let currentDay = 'Måndag';
+let editDay = null, editIdx = null;
 
-    div.innerHTML=`
-      <div class="time">${l.start}</div>
-      <div class="subject">${l.subject}</div>
-      <div class="time">${l.end}</div>
+function save(){
+  localStorage.setItem('s7a_schema',   JSON.stringify(schema));
+  localStorage.setItem('s7a_colors',   JSON.stringify(colors));
+  localStorage.setItem('s7a_disabled', JSON.stringify(disabled));
+  localStorage.setItem('s7a_changes',  JSON.stringify(changes.slice(-10)));
+}
+
+function logChange(msg){
+  const now = new Date();
+  changes.push({msg, time: now.toLocaleString('sv-SE')});
+  save();
+}
+
+// ════════════════════════════════════════
+// LOGIN
+// ════════════════════════════════════════
+function doLogin(){
+  const val = document.getElementById('loginCode').value;
+  if(val === PASS){
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('mainNav').style.display='flex';
+    document.getElementById('mainFooter').style.display='block';
+    renderSchema();
+    showView('schema');
+  } else {
+    const inp = document.getElementById('loginCode');
+    const err = document.getElementById('loginError');
+    inp.classList.remove('shake');
+    void inp.offsetWidth;
+    inp.classList.add('shake');
+    err.classList.add('show');
+    inp.value='';
+    setTimeout(()=>err.classList.remove('show'),3000);
+  }
+}
+
+function logout(){
+  document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('mainNav').style.display='none';
+  document.getElementById('mainFooter').style.display='none';
+  document.getElementById('loginCode').value='';
+  document.getElementById('viewSchema').style.display='none';
+  document.getElementById('viewAdmin').style.display='none';
+}
+
+// ════════════════════════════════════════
+// UTILS
+// ════════════════════════════════════════
+function toMin(t){const[h,m]=t.split(':').map(Number);return h*60+m;}
+
+function getColor(s){return colors[s]||'#64748b';}
+
+function textCol(hex){
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return(r*299+g*587+b*114)/1000>145?'#0d0f1a':'#ffffff';
+}
+
+function toast(msg,icon='✅'){
+  const t=document.getElementById('toast');
+  document.getElementById('toastMsg').textContent=msg;
+  t.querySelector('.t-icon').textContent=icon;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ════════════════════════════════════════
+// VIEWS
+// ════════════════════════════════════════
+function showView(v){
+  document.getElementById('viewSchema').style.display = v==='schema'?'block':'none';
+  document.getElementById('viewAdmin').style.display  = v==='admin'?'block':'none';
+
+  document.getElementById('btnSchema').className = v==='schema'?'btn btn-primary':'btn btn-ghost';
+  document.getElementById('btnAdmin').className  = v==='admin' ?'btn btn-primary':'btn btn-ghost';
+
+  if(v==='schema') renderSchema();
+  if(v==='admin')  initAdmin();
+}
+
+// ════════════════════════════════════════
+// SCHEMA RENDER
+// ════════════════════════════════════════
+const DAYS = ['Söndag','Måndag','Tisdag','Onsdag','Torsdag','Fredag','Lördag'];
+
+function renderSchema(){
+  const wrap = document.getElementById('week');
+  wrap.innerHTML='';
+  const today = DAYS[new Date().getDay()];
+
+  Object.keys(schema).forEach(day=>{
+    if(disabled[day]) return;
+
+    const isToday = day===today;
+    const col = document.createElement('div');
+    col.className='day-col'+(isToday?' today-col':'');
+    col.dataset.day=day;
+
+    col.innerHTML=`
+      <div class="day-head">
+        <h2>${day}</h2>
+        ${isToday?'<span class="today-badge">Idag</span>':''}
+      </div>
+      <div class="lessons-wrap"></div>
     `;
-    d.appendChild(div);
+
+    const wrap2 = col.querySelector('.lessons-wrap');
+
+    schema[day].forEach(l=>{
+      const bg=getColor(l.subject);
+      const fg=textCol(bg);
+      const div=document.createElement('div');
+      div.className='lesson';
+      div.dataset.start=l.start;div.dataset.day=day;
+      div.style.background=bg;div.style.color=fg;
+      div.innerHTML=`
+        <div class="l-time">${l.start}</div>
+        <div class="l-name">${l.subject}</div>
+        ${l.teacher?`<div class="l-teacher"><i class="fa-solid fa-user" style="font-size:9px"></i>${l.teacher}</div>`:''}
+        <div class="l-time">${l.end}</div>
+      `;
+      wrap2.appendChild(div);
+    });
+
+    wrap.appendChild(col);
   });
 
-  weekEl.appendChild(d);
-});
+  scrollToToday();
+  updateLive();
+}
 
-// AUTO SCROLL
 function scrollToToday(){
-  const now=new Date();
-  const days=["Söndag","Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag"];
-  const today=days[now.getDay()];
-  const el=document.querySelector(`.day[data-day="${today}"]`);
-  if(el) el.scrollIntoView({behavior:"smooth",inline:"center"});
-}
-scrollToToday();
-
-// TIME
-function toMin(t){
-  const [h,m]=t.split(":").map(Number);
-  return h*60+m;
+  const today=DAYS[new Date().getDay()];
+  const el=document.querySelector(`.day-col[data-day="${today}"]`);
+  if(el) el.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
 }
 
-// LIVE
-function update(){
+function updateLive(){
   const now=new Date();
   const min=now.getHours()*60+now.getMinutes();
-  const days=["Söndag","Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag"];
-  const today=days[now.getDay()];
+  const today=DAYS[now.getDay()];
 
-  document.querySelector("#dayTitle span").textContent=today;
+  document.querySelectorAll('.lesson').forEach(l=>l.classList.remove('current','next-up'));
 
-  document.querySelectorAll(".lesson").forEach(l=>{
-    l.classList.remove("current","next");
-  });
-
-  if(!schema[today]){
-    liveInfo.textContent="Ingen skola";
-    return;
+  if(!schema[today]||disabled[today]){
+    document.getElementById('liveText').textContent='Ingen skola';return;
   }
 
-  let current=null;
-  let next=null;
-
-  for(let l of schema[today]){
-    const s=toMin(l.start);
-    const e=toMin(l.end);
-
-    if(min>=s && min<e) current=l;
-    if(min<s && !next) next=l;
+  let cur=null,nxt=null;
+  for(const l of schema[today]){
+    const s=toMin(l.start),e=toMin(l.end);
+    if(min>=s&&min<e) cur=l;
+    if(min<s&&!nxt) nxt=l;
   }
 
-  if(current){
-    document.querySelectorAll(`.lesson[data-day="${today}"]`).forEach(div=>{
-      if(div.dataset.start===current.start){
-        div.classList.add("current");
-      }
+  if(cur){
+    document.querySelectorAll(`.lesson[data-day="${today}"]`).forEach(d=>{
+      if(d.dataset.start===cur.start) d.classList.add('current');
     });
-    liveInfo.innerHTML=`Nu: ${current.subject}`;
-  }
-  else if(next){
-    document.querySelectorAll(`.lesson[data-day="${today}"]`).forEach(div=>{
-      if(div.dataset.start===next.start){
-        div.classList.add("next");
-      }
+    document.getElementById('liveText').textContent=`Nu: ${cur.subject}`;
+  } else if(nxt){
+    document.querySelectorAll(`.lesson[data-day="${today}"]`).forEach(d=>{
+      if(d.dataset.start===nxt.start) d.classList.add('next-up');
     });
-    liveInfo.innerHTML=`Nästa: ${next.subject}`;
-  }
-  else{
-    liveInfo.innerHTML="Slut för idag";
+    document.getElementById('liveText').textContent=`Nästa: ${nxt.subject}`;
+  } else {
+    document.getElementById('liveText').textContent='Slut för idag';
   }
 }
 
-update();
-setInterval(update,30000);
-</script>
+// ════════════════════════════════════════
+// ADMIN
+// ════════════════════════════════════════
+function initAdmin(){
+  buildSidebarDays();
+  populateDaySelect();
+  adminPage('oversikt');
+}
 
+function buildSidebarDays(){
+  const el=document.getElementById('sidebarDays');
+  el.innerHTML='';
+  Object.keys(schema).forEach(day=>{
+    const div=document.createElement('div');
+    div.className='sidebar-day-item'+(day===currentDay?' active':'');
+    div.onclick=()=>{currentDay=day;selectDayInAdmin(day);};
+    div.innerHTML=`
+      ${day}
+      <span class="day-count">${disabled[day]?'Av':schema[day].length}</span>
+    `;
+    el.appendChild(div);
+  });
+}
+
+function selectDayInAdmin(day){
+  currentDay=day;
+  buildSidebarDays();
+  adminPage('lektioner');
+  renderLessons();
+}
+
+function populateDaySelect(){
+  const sel=document.getElementById('nDay');
+  sel.innerHTML='';
+  Object.keys(schema).forEach(d=>{
+    const o=document.createElement('option');
+    o.value=d;o.textContent=d;
+    sel.appendChild(o);
+  });
+}
+
+function adminPage(page){
+  ['oversikt','lektioner','ny','dagar','farger'].forEach(p=>{
+    document.getElementById('page'+p.charAt(0).toUpperCase()+p.slice(1)).style.display = p===page?'block':'none';
+    const si=document.getElementById('si-'+p);
+    if(si) si.classList.toggle('active', p===page);
+  });
+
+  if(page==='oversikt')   renderOversikt();
+  if(page==='lektioner')  {buildDayBtnRow();renderLessons();}
+  if(page==='dagar')      renderDaysGrid();
+  if(page==='farger')     renderColorGrid();
+}
+
+// ÖVERSIKT
+function renderOversikt(){
+  const allLessons = Object.values(schema).flat();
+  const activeDays = Object.keys(schema).filter(d=>!disabled[d]).length;
+  const subjects   = new Set(allLessons.map(l=>l.subject)).size;
+
+  document.getElementById('statsRow').innerHTML=`
+    <div class="stat-card"><div class="stat-num">${allLessons.length}</div><div class="stat-label">Totala lektioner</div></div>
+    <div class="stat-card"><div class="stat-num">${activeDays}</div><div class="stat-label">Aktiva dagar</div></div>
+    <div class="stat-card"><div class="stat-num">${subjects}</div><div class="stat-label">Ämnen</div></div>
+    <div class="stat-card"><div class="stat-num">${Object.values(schema).flat().filter(l=>l.teacher).length}</div><div class="stat-label">Med lärare</div></div>
+  `;
+
+  const rcEl=document.getElementById('recentChanges');
+  if(changes.length===0){
+    rcEl.innerHTML='<div class="empty-state"><i class="fa-solid fa-clock-rotate-left"></i><p>Inga ändringar ännu.</p></div>';
+  } else {
+    rcEl.innerHTML=changes.slice().reverse().map(c=>`
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);">
+        <span style="font-size:18px">🔹</span>
+        <div>
+          <div style="font-size:14px;color:var(--text)">${c.msg}</div>
+          <div style="font-size:11px;color:var(--muted2);margin-top:2px">${c.time}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+// DAY BUTTONS
+function buildDayBtnRow(){
+  const row=document.getElementById('dayBtnRow');
+  row.innerHTML='';
+  Object.keys(schema).forEach(day=>{
+    const b=document.createElement('button');
+    b.className='btn '+(day===currentDay?'btn-primary':'btn-ghost')+' btn-sm';
+    b.textContent=day;
+    if(disabled[day]) b.style.opacity='0.4';
+    b.onclick=()=>{currentDay=day;buildDayBtnRow();renderLessons();buildSidebarDays();};
+    row.appendChild(b);
+  });
+}
+
+// LESSONS TABLE
+function renderLessons(){
+  const tbody=document.getElementById('lessonsBody');
+  tbody.innerHTML='';
+  const list=schema[currentDay]||[];
+  if(list.length===0){
+    tbody.innerHTML=`<tr><td colspan="5"><div class="empty-state"><i class="fa-solid fa-calendar-xmark"></i><p>Inga lektioner på ${currentDay}</p></div></td></tr>`;
+    return;
+  }
+  list.forEach((l,i)=>{
+    const bg=getColor(l.subject);
+    const fg=textCol(bg);
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td><span class="subj-pill" style="background:${bg};color:${fg}">${l.subject}</span></td>
+      <td>${l.teacher||`<span style="color:var(--muted2);font-style:italic;font-size:12px">–</span>`}</td>
+      <td><span class="time-tag">${l.start}</span></td>
+      <td><span class="time-tag">${l.end}</span></td>
+      <td>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-ghost btn-xs" onclick="openEdit('${currentDay}',${i})"><i class="fa-solid fa-pen"></i></button>
+          <button class="btn btn-danger btn-xs" onclick="deleteLesson('${currentDay}',${i})"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// EDIT
+function openEdit(day,idx){
+  editDay=day;editIdx=idx;
+  const l=schema[day][idx];
+  document.getElementById('eSubject').value=l.subject;
+  document.getElementById('eTeacher').value=l.teacher||'';
+  document.getElementById('eStart').value=l.start;
+  document.getElementById('eEnd').value=l.end;
+  document.getElementById('editModal').classList.add('open');
+}
+
+function closeModal(){document.getElementById('editModal').classList.remove('open');}
+
+function saveEdit(){
+  const l=schema[editDay][editIdx];
+  const oldSubj=l.subject;
+  l.subject=document.getElementById('eSubject').value.trim().toUpperCase()||l.subject;
+  l.teacher=document.getElementById('eTeacher').value.trim();
+  l.start=document.getElementById('eStart').value;
+  l.end=document.getElementById('eEnd').value;
+  save();closeModal();renderLessons();renderSchema();buildSidebarDays();
+  logChange(`Redigerade ${l.subject} (${editDay})`);
+  toast('Lektion sparad! ✏️','✅');
+}
+
+function deleteLesson(day,idx){
+  const l=schema[day][idx];
+  if(!confirm(`Ta bort ${l.subject} (${l.start}–${l.end})?`)) return;
+  schema[day].splice(idx,1);
+  save();renderLessons();renderSchema();buildSidebarDays();renderOversikt();
+  logChange(`Tog bort ${l.subject} (${day})`);
+  toast(`${l.subject} borttagen`,'🗑️');
+}
+
+// ADD
+function addLesson(){
+  const day=document.getElementById('nDay').value;
+  const subject=document.getElementById('nSubject').value.trim().toUpperCase();
+  const teacher=document.getElementById('nTeacher').value.trim();
+  const start=document.getElementById('nStart').value;
+  const end=document.getElementById('nEnd').value;
+
+  if(!subject){toast('Ange ett ämne!','⚠️');return;}
+  if(!start||!end){toast('Ange start- och sluttid!','⚠️');return;}
+  if(toMin(start)>=toMin(end)){toast('Sluttid måste vara efter starttid!','⚠️');return;}
+
+  schema[day].push({start,end,subject,teacher});
+  schema[day].sort((a,b)=>toMin(a.start)-toMin(b.start));
+  save();renderSchema();buildSidebarDays();
+
+  document.getElementById('nSubject').value='';
+  document.getElementById('nTeacher').value='';
+
+  logChange(`Lade till ${subject} (${day})`);
+  toast(`${subject} tillagd på ${day}! 🎉`,'✅');
+}
+
+// HANTERA DAGAR
+function renderDaysGrid(){
+  const grid=document.getElementById('daysGrid');
+  grid.innerHTML='';
+  Object.keys(schema).forEach(day=>{
+    const isOff=disabled[day];
+    const card=document.createElement('div');
+    card.className='day-manage-card'+(isOff?' disabled':'');
+    card.innerHTML=`
+      <div class="day-mc-head">
+        <h3>${day}</h3>
+        <label class="toggle-day">
+          <input type="checkbox" ${isOff?'':'checked'} onchange="toggleDay('${day}',this.checked)">
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+      <div class="day-mc-meta">${schema[day].length} lektioner &nbsp;·&nbsp; ${isOff?'<span style="color:var(--accent2)">Inaktiv</span>':'<span style="color:var(--accent3)">Aktiv</span>'}</div>
+      <div style="margin-top:10px;font-size:12px;color:var(--muted2);">
+        ${isOff?'⛔ Denna dag visas inte i schemat':'✅ Denna dag visas i schemat'}
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function toggleDay(day, active){
+  disabled[day]=!active;
+  save();renderSchema();renderDaysGrid();buildSidebarDays();
+  logChange(`${active?'Aktiverade':'Avaktiverade'} ${day}`);
+  toast(`${day} ${active?'aktiverad':'avaktiverad'}`, active?'✅':'⛔');
+}
+
+// FÄRGER
+function renderColorGrid(){
+  const grid=document.getElementById('colorGrid');
+  grid.innerHTML='';
+  const subjects=new Set();
+  Object.values(schema).forEach(d=>d.forEach(l=>subjects.add(l.subject)));
+  subjects.forEach(s=>{
+    const col=colors[s]||'#64748b';
+    const fg=textCol(col);
+    const card=document.createElement('div');
+    card.className='color-card';
+    card.innerHTML=`
+      <div class="col-swatch" style="background:${col}" id="sw-${s}"></div>
+      <div class="col-info">
+        <strong>${s}</strong>
+        <small id="cl-${s}">${col}</small>
+      </div>
+      <input type="color" class="col-picker" value="${col}"
+        oninput="updateColor('${s}',this.value)">
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function updateColor(s,hex){
+  colors[s]=hex;
+  const sw=document.getElementById('sw-'+s);
+  const cl=document.getElementById('cl-'+s);
+  if(sw) sw.style.background=hex;
+  if(cl) cl.textContent=hex;
+  save();renderSchema();
+}
+
+// INIT
+document.getElementById('loginCode').addEventListener('keydown',e=>{
+  if(e.key==='Enter') doLogin();
+});
+
+setInterval(updateLive,30000);
+</script>
 </body>
 </html>
